@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#315847" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1813" media="(prefers-color-scheme: dark)" />
+    <meta name="description" content="Sign in to Shoppy and discover your next everyday find." />
+    <title>Sign in | Shoppy</title>
+    <script>
+      // Apply the saved or system theme before React loads, so dark mode never flashes white.
+      try {
+        var saved = localStorage.getItem('theme')
+        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+      } catch (error) {
+        document.documentElement.dataset.theme = 'light'
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

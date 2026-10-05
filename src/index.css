@@ -1,0 +1,124 @@
+/* Enable Tailwind utilities without resetting our existing page styles. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Use the same dark-mode switch as ThemeToggle and the initial HTML script. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  /* Existing --accent is a brand colour; shadcn hover surfaces use the soft shade. */
+  --color-accent: var(--accent-soft);
+  --color-accent-foreground: var(--accent-text);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Aliases resolve from the active light/dark palette below. */
+:root {
+  --radius: 0.625rem;
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface);
+  --popover-foreground: var(--text);
+  --primary: var(--brand);
+  --primary-foreground: var(--on-brand);
+  --secondary: var(--surface-soft);
+  --secondary-foreground: var(--text);
+  --muted: var(--surface-muted);
+  --muted-foreground: var(--text-muted);
+  --destructive: var(--error);
+  --destructive-foreground: var(--bg);
+  --input: var(--border-strong);
+  --ring: var(--focus);
+}
+
+/* Theme colours. Each variable names a job (page background, muted text, brand green...)
+   rather than a value, so the component stylesheets never need to know which theme is on. */
+:root {
+  color-scheme: light;
+  --bg: #fafbf8;
+  --surface: #ffffff;
+  --surface-soft: #efeee5;
+  --surface-muted: #eeece2;
+  --text: #243d34;
+  --text-muted: #637062;
+  --text-faint: #83887f;
+  --brand: #315847;
+  --brand-strong: #203d30;
+  --brand-soft: #eaf0e8;
+  --on-brand: #ffffff;
+  --accent: #ad7047;
+  --accent-soft: #f1e5d9;
+  --accent-text: #875b3d;
+  --border: #e1e5dc;
+  --border-strong: #b8c8bb;
+  --focus: #658c71;
+  --focus-ring: #9dbba6;
+  --error: #963e2b;
+  --shadow: rgba(36, 61, 52, .11);
+  --shadow-soft: rgba(36, 61, 52, .04);
+}
+
+/* Dark forest green. The inline script in index.html sets data-theme before the first paint,
+   and ThemeToggle changes it afterwards. color-scheme makes the browser draw its own parts
+   (select menus, number arrows, file pickers, scrollbars) in matching dark colours. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1813;
+  --surface: #17221c;
+  --surface-soft: #1b2a22;
+  --surface-muted: #233029;
+  --text: #e6ece6;
+  --text-muted: #a5b3a8;
+  --text-faint: #7d8c80;
+  --brand: #8fc4a0;
+  --brand-strong: #a9d6b7;
+  --brand-soft: #22382c;
+  --on-brand: #0f1813;
+  --accent: #d9a473;
+  --accent-soft: #3a2e23;
+  --accent-text: #e3b98f;
+  --border: #2a3830;
+  --border-strong: #3d5146;
+  --focus: #7fb391;
+  --focus-ring: #4f7f63;
+  --error: #ef9a86;
+  --shadow: rgba(0, 0, 0, .45);
+  --shadow-soft: rgba(0, 0, 0, .25);
+}
+
+:root { font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); background: var(--bg); font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input { font: inherit; }
+button, a, input { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+a { color: inherit; }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 5px; }
+
+[data-sonner-toast] .toast-description { color: var(--text-muted); }

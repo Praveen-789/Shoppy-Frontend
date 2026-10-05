@@ -1,0 +1,62 @@
+.login-page { min-height: 100svh; display: grid; grid-template-columns: 46% 54%; }
+.story-panel { background: var(--surface-soft); padding: 42px 58px 28px; display: flex; flex-direction: column; overflow: hidden; }
+.brand { display: inline-flex; align-items: center; width: fit-content; text-decoration: none; font-size: 29px; font-weight: 750; letter-spacing: -1.4px; }
+.brand-icon { width: 32px; height: 32px; margin-right: 10px; }
+.brand-dot { color: var(--accent); }
+.story-content { margin: auto; padding-top: 54px; max-width: 420px; width: 100%; }
+.eyebrow, .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; }
+.eyebrow { color: var(--text-muted); }
+h1 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(44px, 4.6vw, 67px); letter-spacing: -2.4px; line-height: 1.06; margin: 22px 0; }
+.story-content > p { color: var(--text-muted); max-width: 310px; font-size: 15px; line-height: 1.8; }
+/* The shopping bags are artwork, so they keep their own paint in both themes. */
+.shopping-art { height: 280px; position: relative; margin: 12px 0 22px; }
+.art-circle { position: absolute; width: 230px; height: 230px; background: var(--surface-muted); border-radius: 50%; left: 80px; top: 28px; }
+.large-bag { position: absolute; width: 155px; height: 174px; background: #315847; top: 79px; left: 170px; transform: rotate(9deg); border-radius: 3px 3px 9px 9px; box-shadow: 9px 13px 20px var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #f3eee1; }
+.large-handle, .small-handle { position: absolute; border: 7px solid; border-bottom: 0; border-radius: 40px 40px 0 0; width: 62px; height: 62px; top: -46px; left: 46px; color: #315847; }
+.large-bag > svg { width: 43px; height: 43px; }
+.large-bag > span { font-size: 24px; font-weight: 700; letter-spacing: -1px; margin-top: 7px; }
+.small-bag { position: absolute; width: 124px; height: 143px; top: 99px; left: 61px; background: #cfa27e; transform: rotate(-12deg); border-radius: 3px 3px 7px 7px; display: grid; place-items: center; color: #654731; font-family: Georgia, serif; font-size: 28px; line-height: 1; box-shadow: 0 13px 20px var(--shadow); }
+.small-handle { width: 50px; height: 48px; left: 37px; top: -35px; border-width: 6px; color: #bd906c; }
+.art-spark { position: absolute; color: var(--accent); font-size: 35px; }
+.spark-one { left: 28px; top: 39px; }
+.spark-two { right: 32px; top: 78px; font-size: 43px; }
+.find-tag { position: absolute; bottom: 0; left: 92px; background: var(--surface); padding: 12px 19px; border: 1px solid var(--border); border-radius: 6px; font-size: 11px; transform: rotate(-4deg); box-shadow: 0 6px 18px var(--shadow-soft); }
+.find-tag span { color: var(--accent); margin-right: 8px; }
+.story-perks { display: flex; gap: 26px; font-size: 11px; color: var(--text-muted); padding-bottom: 42px; }
+.story-footer { color: var(--text-faint); font-size: 10px; }
+.form-panel { padding: 44px 58px 28px; display: flex; flex-direction: column; }
+.top-note { display: flex; justify-content: flex-end; align-items: center; gap: 16px; font-size: 12px; color: var(--text-faint); }
+.text-button { background: none; border: none; padding: 0; color: var(--brand); font-size: inherit; font-weight: 600; }
+.text-button:hover { text-decoration: underline; }
+.top-note .text-button { margin-left: 7px; }
+.login-content { width: 100%; max-width: 380px; margin: auto; padding: 55px 0 35px; }
+.welcome-icon { display: grid; place-items: center; width: 49px; height: 49px; background: var(--brand-soft); border-radius: 14px; margin-bottom: 27px; }
+.welcome-icon svg { width: 25px; height: 25px; }
+.form-eyebrow { color: var(--text-faint); font-size: 9px; letter-spacing: 1.8px; }
+h2 { font-size: 35px; font-weight: 600; letter-spacing: -1.4px; margin: 12px 0 10px; }
+.form-intro { color: var(--text-faint); font-size: 13px; margin: 0 0 36px; }
+form label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+form input { width: 100%; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); padding: 15px 16px; font-size: 13px; color: var(--text); min-height: 49px; }
+form input::placeholder { color: var(--text-faint); }
+form input:focus { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-color: var(--focus); }
+.password-label { display: flex; align-items: center; justify-content: space-between; margin-top: 23px; margin-bottom: 10px; }
+.password-label label { margin: 0; }
+.forgot-button { font-size: 11px; }
+.password-field { position: relative; }
+.password-field input { padding-right: 52px; }
+.visibility-button { position: absolute; right: 6px; top: 5px; width: 40px; height: 40px; display: grid; place-items: center; background: none; border: none; color: var(--text-faint); border-radius: 4px; }
+.visibility-button svg { width: 19px; height: 19px; }
+.sign-in-button { margin-top: 28px; width: 100%; border: none; border-radius: 7px; background: var(--brand); color: var(--on-brand); padding: 16px 21px; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 22px; transition: background .2s; }
+.sign-in-button:hover { background: var(--brand-strong); }
+.sign-in-button span { font-size: 18px; line-height: 16px; }
+.form-message { font-size: 12px; line-height: 1.6; color: var(--text-muted); margin: 12px 0 0; }
+.form-message:empty { display: none; }
+.account-type { margin: 20px 0; }
+.account-type select { width: 100%; padding: 13px; border: 1px solid var(--border); border-radius: 7px; font: inherit; background: var(--surface); color: var(--text); }
+.account-type p { color: var(--text-muted); font-size: 12px; }
+.security-note { border-top: 1px solid var(--border); margin-top: 30px; padding-top: 22px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 10px; color: var(--text-faint); }
+.security-note svg { width: 14px; height: 14px; flex-shrink: 0; }
+.form-footer { display: flex; justify-content: space-between; color: var(--text-faint); font-size: 10px; }
+@media (min-width: 1500px) { .story-panel, .form-panel { padding-left: 80px; padding-right: 80px; } }
+@media (max-width: 1000px) { .story-panel { padding: 32px; } .form-panel { padding: 32px; } .shopping-art { transform: scale(.85); transform-origin: center; } .story-perks { gap: 15px; } }
+@media (max-width: 700px) { .login-page { grid-template-columns: 1fr; } .story-panel { padding: 24px; } .brand { font-size: 25px; } .story-content { max-width: none; padding-top: 30px; } h1 { font-size: 40px; margin: 12px 0; letter-spacing: -1.5px; } .story-content > p { max-width: 330px; font-size: 13px; } .shopping-art, .story-perks, .story-footer { display: none; } .form-panel { padding: 25px 24px; min-height: 570px; } .top-note { font-size: 11px; } .login-content { padding: 35px 0; } .welcome-icon { display: none; } h2 { font-size: 31px; } .form-footer { gap: 20px; } }

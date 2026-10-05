@@ -68,7 +68,7 @@ export default function Checkout() {
   }
   if (!user) return null
   return <div className="shop-page"><ShopHeader disabled={submitting || retryPending} /><main className="shop-content">
-    <section className="shop-intro"><span className="shop-eyebrow">ONE MORE STEP</span><h1>Checkout</h1><p>Cash on delivery · Free delivery within India</p></section>
+    <section className="shop-intro"><span className="shop-eyebrow">ONE MORE STEP</span><h1>Checkout</h1><p>Cash on delivery ·  Free delivery within India</p></section>
     {error && <p role="alert" className="order-error">{error}</p>}
     {cartError && <p role="alert">{cartError} <button onClick={() => void loadCart(userId)} disabled={cartBusy || submitting}>Refresh cart</button></p>}
     {items.length === 0 && !retryPending ? <div className="shop-state"><p>{cartBusy ? 'Loading your cart…' : 'Your cart is empty.'}</p><Link to="/shop">Browse products</Link></div> :

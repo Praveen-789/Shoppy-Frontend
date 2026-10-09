@@ -71,7 +71,7 @@ export default function Checkout() {
     <section className="shop-intro"><span className="shop-eyebrow">ONE MORE STEP</span><h1>Checkout</h1><p>Cash on delivery ·  Free delivery within India</p></section>
     {error && <p role="alert" className="order-error">{error}</p>}
     {cartError && <p role="alert">{cartError} <button onClick={() => void loadCart(userId)} disabled={cartBusy || submitting}>Refresh cart</button></p>}
-    {items.length === 0 && !retryPending ? <div className="shop-state"><p>{cartBusy ? 'Loading your cart…' : 'Your cart is empty.'}</p><Link to="/shop">Browse products</Link></div> :
+    {items?.length === 0 && !retryPending ? <div className="shop-state"><p>{cartBusy ? 'Loading your cart…' : 'Your cart is empty.'}</p><Link to="/shop">Browse products</Link></div> :
       <form className="cart-layout" onSubmit={submit}>
         <section className="checkout-address"><h2>Delivery address</h2>
           <fieldset disabled={submitting || retryPending}>

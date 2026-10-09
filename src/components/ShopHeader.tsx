@@ -13,7 +13,7 @@ export default function ShopHeader({ disabled = false }: { disabled?: boolean })
     <Link className="shop-brand" to="/shop">shoppy<span>.</span></Link>
     <div className="shop-account">
       <span>Hello, {user.name}</span>
-      <nav aria-label="Main navigation"><NavLink to="/shop">Shop</NavLink><NavLink to="/cart">Cart ({count})</NavLink><NavLink to="/orders">My orders</NavLink>{user.role === 'vendor' && <NavLink to="/vendor">My products</NavLink>}</nav>
+      <nav aria-label="Main navigation"><NavLink to="/shop">Shop</NavLink><NavLink to="/cart">Cart ({count})</NavLink><NavLink to="/orders">My orders</NavLink>{user.role === 'vendor' && <><NavLink to="/vendor" end>My products</NavLink><NavLink to="/vendor/orders">Incoming orders</NavLink><NavLink to="/vendor/sales">Sales</NavLink></>}</nav>
       <button onClick={logout} disabled={disabled || busy}>{busy ? 'Signing out...' : 'Sign out'}</button><ThemeToggle />
     </div>
   </header>

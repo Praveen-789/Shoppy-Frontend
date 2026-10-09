@@ -26,7 +26,7 @@ export default function Cart() {
     return () => window.removeEventListener('focus', refresh)
   }, [userId, loadCart])
   if (!user) return null
-  const subtotal = items.filter(item => item.stock > 0).reduce((sum, item) => sum + Math.round(item.price * 100) * item.quantity, 0) / 100
+  const subtotal = items.filter(item => item?.stock > 0).reduce((sum, item) => sum + Math.round(item.price * 100) * item.quantity, 0) / 100
   const count = items.reduce((sum, item) => sum + item.quantity, 0)
   return <div className="shop-page"><ShopHeader /><main className="shop-content">
     {message && <p role="status">{message}</p>}

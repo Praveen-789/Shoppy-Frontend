@@ -21,3 +21,14 @@
 .order-address-editor { margin-top: 20px; background: var(--surface-soft); }
 .order-address-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
 .order-address-actions button[type="submit"] { background: var(--brand); color: var(--on-brand); }
+.vendor-order-portion { padding: 18px; margin: 18px 0; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-soft); }
+.vendor-order-portion h3 { margin: 0; }
+.order-timeline { list-style: none; padding: 0; margin: 18px 0; display: grid; gap: 10px; }
+.order-timeline li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+.order-timeline time, .order-help { color: var(--text-muted); font-size: 13px; }
+.order-list-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.vendor-fulfilment-actions { display: grid; justify-items: start; gap: 16px; margin-top: 18px; }
+.cash-confirm { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; }
+.cash-confirm input { margin-top: 5px; accent-color: var(--brand); flex-shrink: 0; }
+.vendor-fulfilment-actions button { background: var(--brand); color: var(--on-brand); min-height: 44px; }
+@media (max-width: 580px) { .vendor-order-portion { padding: 14px; } .vendor-fulfilment-actions button { width: 100%; } }

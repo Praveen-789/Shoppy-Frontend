@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import ShopHeader from './ShopHeader'
 import { EMPTY_CART, useCartStore } from '../stores/cartStore'
+import WishlistButton from './WishlistButton'
+import { useWishlistStore } from '../stores/wishlistStore'
 import './Products.css'
 
 interface Product {
@@ -24,6 +26,7 @@ export default function Products() {
   const addItem = useCartStore(state => state.addItem)
   const cartBusy = useCartStore(state => state.busy)
   const cartError = useCartStore(state => state.error)
+  const wishlistError = useWishlistStore(state => state.error)
   const [cartNotice, setCartNotice] = useState('')
   const [addingProductId, setAddingProductId] = useState<string | null>(null)
   const [products, setProducts] = useState<Product[]>([])
@@ -79,7 +82,7 @@ export default function Products() {
     <div className={cartCount > 0 ? 'shop-page shop-page-with-cart-bar' : 'shop-page'}>
       <ShopHeader />
       <main className="shop-content">
-        {message && <p className="shop-message" role="status">{message}</p>}{cartError && <p role="alert">{cartError}</p>}{cartNotice && <p className="shop-message" role="status">{cartNotice}</p>}
+        {message && <p className="shop-message" role="status">{message}</p>}{cartError && <p role="alert">{cartError}</p>}{wishlistError && <p role="alert">{wishlistError}</p>}{cartNotice && <p className="shop-message" role="status">{cartNotice}</p>}
         <section className="shop-intro">
           <span className="shop-eyebrow">THE EVERYDAY COLLECTION</span>
           <h1>Little finds. Lots to love.</h1>
@@ -103,6 +106,7 @@ export default function Products() {
                   <div className="product-info"><span className="product-category">{product.category}</span><h2>{product.name}</h2><p>{product.description}</p><div className="product-bottom"><strong>{currency.format(product.price)}</strong><span className={product.stock > 0 ? 'stock-available' : 'stock-unavailable'}>{product.stock > 0 ? 'In stock' : 'Sold out'}</span></div></div>
                   <p className="product-seller">Sold by {product.vendor?.name || 'Vendor'}</p>
                   <div className="product-add">
+                    <WishlistButton product={product} />
                     {cartItems.some(item => item._id === product._id) ? (
                       <>
                         <span className="product-added">✓ Added to cart</span>

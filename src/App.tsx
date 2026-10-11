@@ -5,6 +5,7 @@ import VendorDashboard from './components/VendorDashboard'
 import VendorOrders from './components/VendorOrders'
 import VendorSales from './components/VendorSales'
 import Cart from './components/Cart'
+import Wishlist from './components/Wishlist'
 import Checkout from './components/Checkout'
 import Orders from './components/Orders'
 import ProtectedRoute from './auth/ProtectedRoute'
@@ -15,6 +16,7 @@ function App() {
     <Route path="/login" element={<Login />} />
     <Route element={<ProtectedRoute />}>
       <Route path="/shop" element={<Products />} />
+      <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/orders" element={<Orders />} />

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import * as api from '../api'
 import type { LoginInput, RegisterInput, User } from '../api'
 import { useCartStore } from '../stores/cartStore'
+import { useWishlistStore } from '../stores/wishlistStore'
 import { AuthContext } from './AuthContext'
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
@@ -14,7 +15,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const controller = new AbortController()
     api.getCurrentUser(controller.signal)
-      .then(currentUser => { if (!controller.signal.aborted) { useCartStore.getState().setSession(currentUser?.id || null); setUser(currentUser) } })
+      .then(currentUser => { if (!controller.signal.aborted) { useCartStore.getState().setSession(currentUser?.id || null);
+         useWishlistStore.getState().setSession(currentUser?.id || null); setUser(currentUser) } })
       .catch(() => {
         if (!controller.signal.aborted) setMessage('Could not check your session. Check that the backend is running.')
       })
@@ -28,6 +30,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const result = await api.login(input)
       useCartStore.getState().setSession(result.user.id)
+      useWishlistStore.getState().setSession(result.user.id)
       setUser(result.user)
       setMessage(result.message)
       return result.user
@@ -42,6 +45,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const result = await api.register(input)
       useCartStore.getState().setSession(result.user.id)
+      useWishlistStore.getState().setSession(result.user.id)
       setUser(result.user)
       setMessage(result.message)
       return result.user
@@ -56,6 +60,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await api.logout()
       useCartStore.getState().setSession(null)
+      useWishlistStore.getState().setSession(null)
       setUser(null)
       setMessage('You have signed out.')
     } catch (error) {

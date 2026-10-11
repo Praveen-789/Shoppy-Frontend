@@ -49,6 +49,7 @@ export default function VendorSales() {
 
   if (!user || user.role !== 'vendor') return null
   const report = result?.userId === user.id ? result.report : null
+  const exportParams = new URLSearchParams({ ...(period.from ? { from: period.from } : {}), ...(period.to ? { to: period.to } : {}) })
   const periodLabel = period.from && period.to ? `${period.from} to ${period.to}`
     : period.from ? `From ${period.from}` : period.to ? `Through ${period.to}` : 'All time'
   return <div className="shop-page"><ShopHeader /><main className="shop-content sales-content">
@@ -65,6 +66,8 @@ export default function VendorSales() {
       <button type="button" disabled={loading} onClick={() => { setFrom(''); setTo(''); setFilterError(''); setPeriod({ from: '', to: '' }) }}>All time</button>
       <button type="button" disabled={loading} onClick={() => setRefresh(value => value + 1)}>Refresh sales</button>
     </form>
+    <p className="sales-help"><a href={`/api/vendor/sales/export.xlsx?${exportParams}`}>Download Excel</a> · <a href={`/api/vendor/sales/export.csv?${exportParams}`}>Download CSV</a></p>
+    <p className="sales-help">Downloads use your applied dates and include orders awaiting delivery. Excel supports up to 10,000 product rows; use CSV for larger reports.</p>
     {filterError && <p className="sales-error" role="alert">{filterError}</p>}
     <p className="sales-period">{periodLabel} · India time</p>
     <p className="sales-help">Dates select when orders were placed. Totals show their current delivery and cash collection progress.</p>

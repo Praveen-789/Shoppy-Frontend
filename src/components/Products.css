@@ -3,8 +3,8 @@
 .shop-brand { font-size: 30px; font-weight: 750; letter-spacing: -1.5px; text-decoration: none; }
 .shop-brand span { color: var(--accent); }
 .shop-account { display: flex; align-items: center; gap: 20px; font-size: 14px; }
-.shop-page button { border: 1px solid var(--border-strong); border-radius: 7px; padding: 9px 15px; background: var(--surface); color: var(--brand); }
-.shop-page button:disabled { opacity: .6; cursor: wait; }
+.shop-page button:where(:not([data-slot])) { border: 1px solid var(--border-strong); border-radius: 7px; padding: 9px 15px; background: var(--surface); color: var(--brand); }
+.shop-page button:where(:not([data-slot])):disabled { opacity: .6; cursor: not-allowed; }
 .shop-content { max-width: 1208px; margin: auto; padding: 40px 24px 64px; }
 .shop-intro { background: var(--surface-soft); padding: 40px; border-radius: 16px; }
 .shop-eyebrow { font-size: 11px; letter-spacing: 2px; font-weight: 700; color: var(--text-muted); }
@@ -39,7 +39,7 @@
 .shop-load-more p { font-size: 14px; color: var(--text-muted); }
 .shop-footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; color: var(--text-faint); font-size: 12px; }
 @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 580px) { .shop-header { padding: 18px; } .shop-account { gap: 10px; } .shop-account > span { max-width: 120px; overflow-wrap: anywhere; } .shop-content { padding: 24px 18px 40px; } .shop-intro { padding: 26px; } .shop-filters { flex-direction: column; } .shop-category { width: 100%; } .product-grid { grid-template-columns: 1fr; } }
+@media (max-width: 580px) { .shop-header { padding: 14px 18px; } .shop-content { padding: 24px 18px 40px; } .shop-intro { padding: 26px; } .shop-filters { flex-direction: column; } .shop-category { width: 100%; } .product-grid { grid-template-columns: 1fr; } }
 
 .product-add { padding: 0 22px 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 .product-add button { width: 100%; min-height: 44px; }
@@ -55,3 +55,6 @@
 .wishlist-control { width: 100%; }
 .wishlist-control span { display: block; margin-top: 8px; color: var(--accent-text); font-size: 13px; }
 .wishlist-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 24px 0; }
+
+.product-name-link { color: inherit; text-decoration: none; }
+.product-name-link:hover { text-decoration: underline; }

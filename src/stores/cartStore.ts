@@ -20,7 +20,7 @@ interface CartState {
   error: string
   setSession: (userId: string | null) => void
   loadCart: (userId: string) => Promise<boolean>
-  addItem: (userId: string, product: CartProduct) => Promise<boolean>
+  addItem: (userId: string, product: CartProduct, quantity?: number) => Promise<boolean>
   setQuantity: (userId: string, itemId: string, quantity: number) => Promise<boolean>
   removeItem: (userId: string, itemId: string) => Promise<boolean>
   clearCart: (userId: string) => Promise<boolean>
@@ -65,7 +65,10 @@ export const useCartStore = create<CartState>((set, get) => {
       if (userId) void request(userId)
     },
     loadCart: userId => request(userId),
-    addItem: (userId, product) => request(userId, '/items', 'POST', { productId: product._id }),
+    addItem: (userId, product, quantity = 1) => {
+      if (!Number.isSafeInteger(quantity) || quantity < 1 || quantity > 1000000) return Promise.resolve(false)
+      return request(userId, '/items', 'POST', { productId: product._id, ...(quantity === 1 ? {} : { quantity }) })
+    },
     setQuantity: (userId, itemId, quantity) => {
       if (!Number.isSafeInteger(quantity) || quantity < 1) return Promise.resolve(false)
       return request(userId, `/items/${itemId}`, 'PATCH', { quantity })

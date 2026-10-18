@@ -4,12 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "test:filters": "node tests/filters-smoke-test.mjs",
+    "test:images": "node tests/images-smoke-test.mjs",
+    "test:vendor": "node tests/vendor-smoke-test.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test:cart": "node tests/cart-smoke-test.mjs",
     "preview": "vite preview",
-    "test:wishlist": "node tests/wishlist-smoke-test.mjs"
+    "test:wishlist": "node tests/wishlist-smoke-test.mjs",
+    "test:orders": "node tests/orders-smoke-test.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

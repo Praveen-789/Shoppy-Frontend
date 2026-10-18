@@ -1,14 +1,19 @@
+import type { ProductAttributes } from './categoryApi'
+import type { ProductImage } from './productImages'
+
 export interface VendorProduct {
   _id: string
   name: string
   description: string
   price: number
   category: string
+  attributes?: ProductAttributes
   stock: number
   image: string
+  images?: ProductImage[]
   status: 'draft' | 'published'
 }
-export type ProductDetails = Pick<VendorProduct, 'name' | 'description' | 'price' | 'category' | 'stock' | 'status'>
+export type ProductDetails = Pick<VendorProduct, 'name' | 'description' | 'price' | 'category' | 'stock' | 'status' | 'attributes'>
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`/api/vendor/products${path}`, { ...options, credentials: 'include' })
@@ -31,4 +36,18 @@ export function uploadVendorImage(id: string, image: File) {
   return request<{ product: VendorProduct }>(`/${id}/image`, {
     method: 'POST', headers: { 'Content-Type': image.type }, body: image,
   })
+}
+
+export function addVendorImage(id: string, image: File, uploadKey: string) {
+  return request<{ product: VendorProduct }>(`/${id}/images`, {
+    method: 'POST', headers: { 'Content-Type': image.type, 'X-Upload-Key': uploadKey }, body: image,
+  })
+}
+
+export function removeVendorImage(id: string, imageId: string) {
+  return request<{ product: VendorProduct }>(`/${id}/images/${imageId}`, { method: 'DELETE' })
+}
+
+export function setVendorCover(id: string, imageId: string) {
+  return request<{ product: VendorProduct }>(`/${id}/images/${imageId}/cover`, { method: 'PATCH' })
 }

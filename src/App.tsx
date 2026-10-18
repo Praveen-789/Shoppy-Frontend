@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from './components/Login'
 import Products from './components/Products'
+import ProductDetails from './components/ProductDetails'
 import VendorDashboard from './components/VendorDashboard'
 import VendorOrders from './components/VendorOrders'
 import VendorSales from './components/VendorSales'
@@ -14,8 +15,9 @@ function App() {
   return <Routes>
     <Route path="/" element={<Navigate to="/shop" replace />} />
     <Route path="/login" element={<Login />} />
+    <Route path="/shop" element={<Products />} />
+    <Route path="/shop/products/:id" element={<ProductDetails />} />
     <Route element={<ProtectedRoute />}>
-      <Route path="/shop" element={<Products />} />
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />

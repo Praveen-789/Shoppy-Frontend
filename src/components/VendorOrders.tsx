@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useAuth } from '../auth/useAuth'
-import { fulfilmentSteps, statusLabel, paymentLabel } from '../orderTypes'
+import { nextFulfilmentStatus, statusLabel, paymentLabel, payableAmount } from '../orderTypes'
 import type { VendorOrder } from '../orderTypes'
 import ShopHeader from './ShopHeader'
 import OrderTimeline from './OrderTimeline'
@@ -42,7 +42,7 @@ export default function VendorOrders() {
   }, [page, refresh, user?.id])
   async function advance(order: VendorOrder) {
     if (request.current || loading) return
-    const status = fulfilmentSteps[fulfilmentSteps.indexOf(order.status) + 1]
+    const status = nextFulfilmentStatus(order.status)
     if (!status || (status === 'delivered' && !cashChecks[order._id])) return
     const controller = new AbortController()
     request.current = controller
@@ -79,18 +79,24 @@ export default function VendorOrders() {
     {loading && <p role="status">Loading incoming orders…</p>}
     {!loading && !error && orders.length === 0 && <p className="shop-state">No orders for your products yet.</p>}
     <div className="orders-list">{orders.map(order => {
-      const next = fulfilmentSteps[fulfilmentSteps.indexOf(order.status) + 1]
+      const next = nextFulfilmentStatus(order.status)
       return <article className="order-card" key={order._id}>
         <div className="order-heading"><h2>Order #{order._id.slice(-8).toUpperCase()}</h2><span className="order-status">{statusLabel(order.status)}</span></div>
         <p><time dateTime={order.createdAt}>{new Date(order.createdAt).toLocaleString('en-IN')}</time></p>
-        <ul>{order.items.map(item => <li key={item.product}><span>{item.name} × {item.quantity}</span><strong>{currency.format(item.unitPricePaise * item.quantity / 100)}</strong></li>)}</ul>
-        <p><strong>Your COD amount: {currency.format(order.subtotalPaise / 100)}</strong> · {paymentLabel(order.paymentStatus)}</p>
-        <h3>Deliver to</h3><address>{order.address.name} · {order.address.phone}<br />{[order.address.line1, order.address.line2, order.address.city, order.address.state, order.address.postalCode].filter(Boolean).join(', ')}</address>
+        <ul>{order.items.map(item => <li key={item.product}>
+          <div className="order-item-details"><span>{item.name} × {item.quantity}</span>
+            {(item.status === 'cancelled' || order.status === 'cancelled') && <span className="order-help">Cancelled — do not dispatch or collect cash{item.cancelledAt && <> · <time dateTime={item.cancelledAt}>{new Date(item.cancelledAt).toLocaleString('en-IN')}</time></>}</span>}
+          </div><strong>{currency.format(item.unitPricePaise * item.quantity / 100)}</strong>
+        </li>)}</ul>
+        <p><strong>Your COD amount: {currency.format(payableAmount(order) / 100)}</strong> · {paymentLabel(order.paymentStatus)}</p>
+        {payableAmount(order) !== order.subtotalPaise && <p className="order-help">Original subtotal: {currency.format(order.subtotalPaise / 100)}</p>}
+        {order.status === 'cancelled'  && <p className="order-help">Cancelled by the customer. Do not dispatch or collect cash.</p>}
+        <h3>{order.status === 'cancelled' ? 'Order address' : 'Deliver to'}</h3><address>{order.address.name} · {order.address.phone}<br />{[order.address.line1, order.address.line2, order.address.city, order.address.state, order.address.postalCode].filter(Boolean).join(', ')}</address>
         <OrderTimeline history={order.history} />
         {next && <div className="vendor-fulfilment-actions">
           {next === 'delivered' && <label className="cash-confirm"><input type="checkbox" checked={cashChecks[order._id] || false}
             disabled={loading || savingId !== null} onChange={event => setCashChecks(current => ({ ...current, [order._id]: event.target.checked }))} />
-            I confirm delivery and collection of {currency.format(order.subtotalPaise / 100)} cash.</label>}
+            I confirm delivery and collection of {currency.format(payableAmount(order) / 100)} cash.</label>}
           <button disabled={loading || savingId !== null || (next === 'delivered' && !cashChecks[order._id])} onClick={() => void advance(order)}>
             {savingId === order._id ? 'Updating…' : next === 'delivered' ? 'Mark delivered & cash collected' : `Mark ${statusLabel(next).toLowerCase()}`}
           </button>

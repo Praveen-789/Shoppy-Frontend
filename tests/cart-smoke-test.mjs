@@ -45,6 +45,14 @@ try {
       return reply(a, [{ ...product, cartItemId: 'row', quantity: 1 }])
     }
     assert.equal(await state().addItem(a, product), true)
+    globalThis.fetch = async (url, options) => {
+      assert.equal(url, '/api/cart/items')
+      assert.deepEqual(JSON.parse(options.body), { productId: product._id, quantity: 2 })
+      return reply(a, [{ ...product, cartItemId: 'row', quantity: 2 }])
+    }
+    assert.equal(await state().addItem(a, product, 2), true)
+    for (const quantity of [0, -1, 1.5, 1000001]) assert.equal(await state().addItem(a, product, quantity), false)
+    useCartStore.setState({ carts: { [a]: [{ ...product, cartItemId: 'row', quantity: 1 }] } })
     globalThis.fetch = async () => reply(a, [], false)
     assert.equal(await state().addItem(a, product), false)
     assert.equal(state().carts[a][0].quantity, 1)

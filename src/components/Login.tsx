@@ -16,7 +16,7 @@ function Login() {
   const location = useLocation()
   const from = location.state?.from as string | undefined
   function destination(role: string) {
-    if (from === '/shop' || from === '/cart' || (from === '/vendor' && role === 'vendor')) return from
+    if (typeof from === 'string' && (['/shop', '/cart', '/wishlist', '/checkout', '/orders'].includes(from) || /^\/shop\/products\/[a-zA-Z0-9_-]+$/.test(from) || (role === 'vendor' && ['/vendor', '/vendor/orders', '/vendor/sales'].includes(from)))) return from
     return role === 'vendor' ? '/vendor' : '/shop'
   }
   const [showPassword, setShowPassword] = useState(false)
@@ -69,7 +69,8 @@ function Login() {
           <span className="welcome-icon"><BagIcon /></span>
           <span className="form-eyebrow">YOUR EVERYDAY FINDS AWAIT</span>
           <h2 id="login-heading">{registering ? 'Create your account.' : 'Welcome back.'}</h2>
-          <p className="form-intro">Sign in and pick up where you left off.</p>
+          <p className="form-intro">Sign in to use your cart, wishlist and orders.</p>
+          <Link to="/shop">Continue browsing without signing in →</Link>
                     {checkingSession ? <p role="status">Checking your session...</p> : <form onSubmit={handleSubmit}>
             {registering && <><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" maxLength={80} required /></>}
             {registering && <div className="account-type"><label htmlFor="role">I want to</label><select id="role" name="role" defaultValue="user"><option value="user">Shop — user account</option><option value="vendor">Sell on Shoppy — vendor account</option></select><p>Vendors can publish products and shop too.</p></div>}

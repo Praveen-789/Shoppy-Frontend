@@ -1,0 +1,25 @@
+.details-back { display: inline-block; margin-bottom: 28px; color: var(--brand); }
+.product-details { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.details-image { min-height: 360px; aspect-ratio: 1; background: var(--brand-soft); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); }
+.details-image img { width: 100%; height: 100%; object-fit: contain; }
+.details-gallery { min-width: 0; }
+.details-photo-count { font-size: 12px; color: var(--text-muted); margin: 14px 0 10px; }
+.details-thumbnails { display: flex; gap: 10px; flex-wrap: wrap; }
+.shop-page .details-thumbnails button { width: 70px; height: 70px; display: grid; place-items: center; padding: 4px; border-radius: 8px; overflow: hidden; }
+.shop-page .details-thumbnails button[aria-pressed="true"] { border: 2px solid var(--brand); background: var(--brand-soft); }
+.details-thumbnails img { width: 100%; height: 100%; object-fit: contain; }
+.details-info { min-width: 0; overflow-wrap: anywhere; }
+.details-info h1 { font-family: Georgia, serif; font-size: clamp(30px, 4vw, 44px); font-weight: 400; margin: 12px 0; }
+.details-info h2 { font-size: 18px; margin: 28px 0 12px; }
+.details-seller, .details-delivery { color: var(--text-muted); font-size: 14px; }
+.details-price { font-size: 28px; font-weight: 700; margin: 24px 0 12px; }
+.details-stock { display: inline-block; border-radius: 20px; padding: 7px 12px; margin: 0; font-size: 13px; }
+.details-description { white-space: pre-wrap; line-height: 1.8; color: var(--text-muted); }
+.details-actions { margin: 24px 0 14px; }
+.details-actions label { display: block; font-weight: 600; margin-bottom: 8px; }
+.details-actions input { width: 100px; padding: 12px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); color: var(--text); font: inherit; }
+.details-actions p { font-size: 14px; }
+.shop-page .details-add-button { display: block; width: 100%; min-height: 46px; margin-top: 16px; background: var(--brand); color: var(--on-brand); border-color: var(--brand); }
+.details-info .wishlist-control button { width: 100%; min-height: 46px; }
+.details-actions input:focus-visible, .details-back:focus-visible, .product-art:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+@media (max-width: 760px) { .product-details { grid-template-columns: 1fr; gap: 28px; } .details-image { min-height: 0; } }

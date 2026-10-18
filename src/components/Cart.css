@@ -22,7 +22,7 @@
 .cart-summary p { color: var(--text-muted); font-size: 13px; line-height: 1.7; }
 .cart-summary button { width: 100%; margin: 12px 0; }
 .cart-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-@media (max-width: 900px) { .cart-layout { grid-template-columns: 1fr; } .shop-header { align-items: flex-start; } .shop-account { flex-wrap: wrap; justify-content: flex-end; gap: 12px; } }
+@media (max-width: 900px) { .cart-layout { grid-template-columns: 1fr; } }
 @media (max-width: 580px) { .cart-item { padding: 16px; gap: 12px; flex-wrap: wrap; } .cart-image { width: 70px; height: 80px; } .cart-line-total { margin-left: auto; } }
 
 /* Keep controls in place when a background refresh starts on window focus. */

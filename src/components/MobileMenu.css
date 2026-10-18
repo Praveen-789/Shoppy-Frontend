@@ -1,0 +1,54 @@
+/* Small-screen header: the brand on the left, a cart shortcut and menu button on the right.
+   The full link row (.shop-account) is hidden below 1100px and the drawer takes its place. */
+.shop-mobile-actions { display: none; align-items: center; gap: 8px; }
+.mobile-menu-button, .mobile-cart-link, .mobile-menu-close, .shop-page .mobile-menu-button, .shop-page .mobile-cart-link {
+  display: inline-grid; place-items: center; width: 42px; height: 42px; padding: 0; flex-shrink: 0;
+  border: 1px solid var(--border-strong); border-radius: 9px; background: var(--surface); color: var(--brand); text-decoration: none;
+}
+.mobile-menu-button svg, .mobile-cart-link svg, .mobile-menu-close svg { width: 20px; height: 20px; }
+.mobile-cart-link { position: relative; }
+.mobile-cart-badge { position: absolute; top: -7px; right: -7px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; display: grid; place-items: center; background: var(--accent); color: var(--on-brand); font-size: 11px; font-weight: 700; line-height: 1; }
+/* Three header tiers. Wide: greeting, every link, Sign out and the theme toggle in one row.
+   Middle (1100px to 1300px): the greeting is dropped and spacing tightens so a vendor's seven links
+   still fit on one line. Narrow (below 1100px): the row is replaced by the drawer. */
+.shop-account > span, .shop-account button { white-space: nowrap; }
+@media (max-width: 1300px) {
+  .shop-account > span { display: none; }
+  .shop-account, .shop-account nav { gap: 14px; }
+}
+@media (max-width: 1100px) {
+  .shop-header .shop-account { display: none; }
+  .shop-mobile-actions { display: flex; }
+}
+
+/* The drawer renders in a portal at the end of <body>, outside .shop-page, so its rules never use that prefix.
+   The drawer itself. Radix sets data-state="open" / "closed" so CSS can run the slide animation,
+   and the closed animation also lets Radix wait before unmounting. */
+.mobile-menu-overlay { position: fixed; inset: 0; z-index: 40; background: var(--shadow); }
+.mobile-menu { position: fixed; top: 0; right: 0; bottom: 0; z-index: 41; display: flex; flex-direction: column; width: min(320px, 86vw); padding: 18px 18px calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--surface); border-left: 1px solid var(--border); box-shadow: -12px 0 32px var(--shadow); overflow-y: auto; outline: none; }
+.mobile-menu-overlay[data-state="open"] { animation: mobile-menu-fade-in .2s ease; }
+.mobile-menu-overlay[data-state="closed"] { animation: mobile-menu-fade-out .2s ease; }
+.mobile-menu[data-state="open"] { animation: mobile-menu-slide-in .24s ease; }
+.mobile-menu[data-state="closed"] { animation: mobile-menu-slide-out .2s ease; }
+@keyframes mobile-menu-fade-in { from { opacity: 0; } }
+@keyframes mobile-menu-fade-out { to { opacity: 0; } }
+@keyframes mobile-menu-slide-in { from { transform: translateX(100%); } }
+@keyframes mobile-menu-slide-out { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .mobile-menu-overlay, .mobile-menu { animation: none !important; } }
+
+.mobile-menu-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.mobile-menu-title { margin: 0; font-size: 16px; font-weight: 650; overflow-wrap: anywhere; }
+.mobile-menu-links { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; }
+.mobile-menu-links a { display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 12px; border-radius: 10px; color: var(--text); font-size: 15px; text-decoration: none; }
+.mobile-menu-links a svg { color: var(--text-muted); flex-shrink: 0; }
+.mobile-menu-links a:hover { background: var(--surface-soft); }
+.mobile-menu-links a.active { background: var(--brand-soft); color: var(--brand); font-weight: 650; }
+.mobile-menu-links a.active svg { color: var(--brand); }
+.mobile-menu-links a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.mobile-menu-count { margin-left: auto; min-width: 24px; padding: 2px 8px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-text); font-size: 12px; font-weight: 700; text-align: center; }
+.mobile-menu-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border); }
+.mobile-menu-theme { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: var(--text-muted); }
+.mobile-menu-signout { width: 100%; min-height: 46px; border: 1px solid var(--border-strong); border-radius: 9px; background: var(--surface); color: var(--brand); font: inherit; font-weight: 600; }
+.mobile-menu-signout:disabled { opacity: .6; cursor: not-allowed; }
+
+a.mobile-menu-signout { display: flex; align-items: center; justify-content: center; text-decoration: none; }

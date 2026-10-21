@@ -6,6 +6,7 @@ import ShopHeader from './ShopHeader'
 import CategoryNavigation from './CategoryNavigation'
 import { EMPTY_CART, useCartStore } from '../stores/cartStore'
 import WishlistButton from './WishlistButton'
+import RatingStars from './RatingStars'
 import { useWishlistStore } from '../stores/wishlistStore'
 import './Products.css'
 import type { Product } from '../productTypes'
@@ -107,25 +108,29 @@ export default function Products() {
           <ShopFilters key={query.category} category={query.category} filters={query} onChange={applyFilters} onClear={() => applyFilters(emptyProductFilters())} />
           <section className="catalog-results" aria-label="Product results" aria-busy={loading || searching}>
           {filterCount > 0 && <div className="active-filter-summary"><span>{filterCount} active {filterCount === 1 ? 'filter' : 'filters'}</span><Button variant="ghost" size="sm" onClick={() => applyFilters(emptyProductFilters())}>Clear filters</Button></div>}
-        {searching || (loading && query.page === 1) ? <p className="shop-state" role="status">Finding the good stuffâ€¦</p> : error && products.length === 0 ? (
+        {searching || (loading && query.page === 1) ? <p className="shop-state" role="status">Finding the good stuff…</p> : error && products.length === 0 ? (
           <div className="shop-state" role="alert"><p>{error}</p><button onClick={() => setRetry(value => value + 1)}>Try again</button></div>
         ) : products?.length === 0 ? <div className="shop-state" role="status"><p>{query.search || query.category || filterCount ? 'No products match. Try another search or adjust your filters.' : 'Our shelves are getting ready. Check back soon!'}</p>{filterCount > 0 && <Button variant="outline" onClick={() => applyFilters(emptyProductFilters())}>Reset filters</Button>}</div> : (
           <>
             <p className="shop-count" role="status">Showing {products.length} of {total} {total === 1 ? 'product' : 'products'}</p>
               <div className="product-grid">{products.map(product => (
                 <article className="product-card" key={product._id}>
-                  <Link className="product-art" to={`/shop/products/${product._id}`} aria-label={`View ${product.name}`}>
-                    {product.image ? <img src={product.image} alt={product.name} loading="lazy" onError={event => { event.currentTarget.style.display = 'none' }} /> : null}
-                    <span className="product-placeholder" aria-hidden="true">{product.name.charAt(0)}</span>
-                  </Link>
+                  {/* The heart is a sibling of the image link, not a child: a button inside a link is invalid HTML. */}
+                  <div className="product-media">
+                    <Link className="product-art" to={`/shop/products/${product._id}`} aria-label={`View ${product.name}`}>
+                      {product.image ? <img src={product.image} alt={product.name} loading="lazy" onError={event => { event.currentTarget.style.display = 'none' }} /> : null}
+                      <span className="product-placeholder" aria-hidden="true">{product.name.charAt(0)}</span>
+                    </Link>
+                    <WishlistButton product={product} variant="icon" />
+                  </div>
                   <div className="product-info"><span className="product-category">{product.category}</span><h2><Link className="product-name-link" to={`/shop/products/${product._id}`}>{product.name}</Link></h2><p>{product.description}</p><div className="product-bottom"><strong>{currency.format(product.price)}</strong><span className={product.stock > 0 ? 'stock-available' : 'stock-unavailable'}>{product.stock > 0 ? 'In stock' : 'Sold out'}</span></div></div>
                   <p className="product-seller">Sold by {product.vendor?.name || 'Vendor'}</p>
+                  <div className="catalog-rating"><RatingStars rating={product.ratingSummary?.average || 0} /><span>{product.ratingSummary?.count ? `${product.ratingSummary.average.toFixed(1)} (${product.ratingSummary.count})` : 'No reviews yet'}</span></div>
                   <div className="product-add">
-                    <WishlistButton product={product} />
                     {cartItems.some(item => item._id === product._id) ? (
                       <>
-                        <span className="product-added">âœ“ Added to cart</span>
-                        <Link className="product-cart-link" to="/cart" aria-label={`Go to cart, ${product.name} is added`}>Go to cart â†’</Link>
+                        <span className="product-added">✓ Added to cart</span>
+                        <Link className="product-cart-link" to="/cart" aria-label={`Go to cart, ${product.name} is added`}>Go to cart →</Link>
                       </>
                     ) : (
                       <button disabled={checkingSession || cartBusy || product.stock === 0} onClick={async () => {
@@ -138,14 +143,14 @@ export default function Products() {
                         } finally {
                           setAddingProductId(null)
                         }
-                      }}>{addingProductId === product._id ? 'Addingâ€¦' : product.stock === 0 ? 'Sold out' : 'Add to cart'}</button>
+                      }}>{addingProductId === product._id ? 'Adding…' : product.stock === 0 ? 'Sold out' : 'Add to cart'}</button>
                     )}
                   </div>
                 </article>
               ))}</div>
             <div className="shop-load-more">
-              {error ? <div role="alert"><p>{error}</p><button onClick={() => setRetry(value => value + 1)} disabled={loading}>Try again</button></div> : hasMore && <button disabled={loading} onClick={() => { setLoading(true); setQuery(current => ({ ...current, page: current.page + 1 })) }}>{loading ? 'Loadingâ€¦' : 'Load more products'}</button>}
-              {loading && <p role="status">Loading more productsâ€¦</p>}
+              {error ? <div role="alert"><p>{error}</p><button onClick={() => setRetry(value => value + 1)} disabled={loading}>Try again</button></div> : hasMore && <button disabled={loading} onClick={() => { setLoading(true); setQuery(current => ({ ...current, page: current.page + 1 })) }}>{loading ? 'Loading…' : 'Load more products'}</button>}
+              {loading && <p role="status">Loading more products…</p>}
             </div>
           </>
         )}
@@ -155,10 +160,10 @@ export default function Products() {
       {cartCount > 0 && (
         <nav className="mobile-cart-bar" aria-label="Cart shortcut">
           <span>{cartCount} {cartCount === 1 ? 'item' : 'items'} in your cart</span>
-          <Link to="/cart">Go to cart â†’</Link>
+          <Link to="/cart">Go to cart →</Link>
         </nav>
       )}
-      <footer className="shop-footer">A little joy, delivered. Â· Shoppy</footer>
+      <footer className="shop-footer">A little joy, delivered. · Shoppy</footer>
     </div>
   )
 }

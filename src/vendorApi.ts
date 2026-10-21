@@ -32,6 +32,12 @@ export function saveVendorProduct(id: string | undefined, details: ProductDetail
   })
 }
 
+export function generateVendorDescription(input: { name: string; category: string; facts: string }, signal: AbortSignal) {
+  return request<{ description: string }>('/generate-description', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input), signal,
+  })
+}
+
 export function uploadVendorImage(id: string, image: File) {
   return request<{ product: VendorProduct }>(`/${id}/image`, {
     method: 'POST', headers: { 'Content-Type': image.type }, body: image,

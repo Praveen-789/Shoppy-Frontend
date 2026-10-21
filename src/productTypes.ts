@@ -5,4 +5,5 @@ export interface Product extends CartProduct {
   description: string
   category: string
   images?: ProductImage[]
+  ratingSummary?: { count: number; average: number }
 }

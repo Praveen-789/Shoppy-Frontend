@@ -8,6 +8,7 @@ import type { Product } from '../productTypes'
 import ShopHeader from './ShopHeader'
 import WishlistButton from './WishlistButton'
 import ProductGallery from './ProductGallery'
+import ProductReviews from './ProductReviews'
 import './ProductDetails.css'
 
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' })
@@ -102,6 +103,7 @@ function ProductDetailsContent({ id }: { id: string | undefined }) {
             {cartError && <p role="alert">{cartError}</p>}
             {wishlistError && <p role="alert">{wishlistError}</p>}
           </div>
+          <ProductReviews productId={product._id} productName={product.name} />
         </article>}
     </main>
     <footer className="shop-footer">A little joy, delivered. · Shoppy</footer>

@@ -10,6 +10,7 @@ import { uploadPendingImages } from '../vendorImageUploads'
 import type { ProductDetails, VendorProduct } from '../vendorApi'
 import ProductAttributeFields from './ProductAttributeFields'
 import VendorProductImages from './VendorProductImages'
+import ProductDescriptionAssistant from './ProductDescriptionAssistant'
 import { productImages, validateImageSelection } from '../productImages'
 import type { PendingImage } from '../productImages'
 import { Button } from './ui/button'
@@ -205,6 +206,8 @@ export default function VendorProductEditor({ product, onClose, onSaved, onBusyC
                   <div className="vendor-field"><label htmlFor="product-price">Price (₹) <span className="vendor-required">*</span></label><Input id="product-price" type="number" required min="0" max="10000000" step="0.01" placeholder="0.00" value={details.price} onChange={event => setDetails({ ...details, price: event.target.value })} /></div>
                   <div className="vendor-field"><label htmlFor="product-stock">Stock quantity <span className="vendor-required">*</span></label><Input id="product-stock" type="number" required min="0" max="1000000" step="1" placeholder="0" value={details.stock} onChange={event => setDetails({ ...details, stock: event.target.value })} /></div>
                   <div className="vendor-field vendor-field-wide"><label htmlFor="product-description">Description <span className="vendor-required">*</span></label><Textarea id="product-description" required maxLength={1000} rows={4} placeholder="What makes this product special? Share the details shoppers should know." value={details.description} onChange={event => setDetails({ ...details, description: event.target.value })} /><p className="vendor-help">{details.description.length}/1000 characters</p></div>
+                  <ProductDescriptionAssistant key={JSON.stringify([details.name, details.category])} name={details.name} category={details.category}
+                    onApply={description => setDetails(current => ({ ...current, description }))} />
                 </div>
               </CardContent>
             </Card>

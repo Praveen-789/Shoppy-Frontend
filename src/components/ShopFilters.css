@@ -1,6 +1,8 @@
 .catalog-layout { display: grid; grid-template-columns: 244px minmax(0, 1fr); gap: 28px; align-items: start; }
 .catalog-results { min-width: 0; }
-.catalog-layout .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Three cards beside the sidebar on wide screens, two once the content column narrows. */
+.catalog-layout .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 1200px) { .catalog-layout .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .catalog-filter-sidebar { position: sticky; top: 62px; }
 .catalog-filter-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
 .catalog-filter-panel > summary { display: flex; align-items: center; gap: 10px; padding: 18px; font-size: 16px; font-weight: 650; cursor: pointer; list-style: none; }

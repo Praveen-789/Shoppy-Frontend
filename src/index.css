@@ -8,11 +8,19 @@
 /* Use the same dark-mode switch as ThemeToggle and the initial HTML script. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* Shadcn normally gets these browser resets from Preflight. Keep the reset
-   scoped to its buttons while the older screens retain their existing styles. */
+/* Shadcn normally gets these browser resets from Preflight. Keep the reset scoped to shadcn's
+   own elements (everything it renders carries a data-slot attribute) while the older screens
+   retain their existing styles. "border: 0 solid" matters: Tailwind's border utilities only set
+   the width, so without a solid style the browser would draw nothing. */
 @layer base {
-  [data-slot="button"] { background: transparent; color: var(--text); border: 0 solid; }
+  [data-slot] { border: 0 solid var(--border); margin: 0; }
+  [data-slot="button"], [data-slot="select-trigger"] { background: transparent; color: var(--text); font: inherit; }
+  [data-slot="input"], [data-slot="textarea"] { font: inherit; }
 }
+
+/* Small shadcn adjustments that apply on every screen. */
+[data-slot="button"][data-variant="outline"] { border-color: var(--border-strong); }
+[data-slot="button"]:disabled { cursor: not-allowed; }
 
 @theme inline {
   --color-background: var(--background);
@@ -39,7 +47,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: 'Segoe UI', Arial, sans-serif;
+  --font-sans: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
 }
 
 /* Aliases resolve from the active light/dark palette below. */
@@ -118,13 +127,15 @@
   --shadow-soft: rgba(0, 0, 0, .25);
 }
 
-:root { font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); background: var(--bg); font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+:root { font-family: var(--font-sans); color: var(--text); background: var(--bg); font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
-button, input { font: inherit; }
+button, input, select, textarea { font: inherit; }
 button, a, input { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
-a { color: inherit; }
+/* Plain links inherit the text colour. shadcn buttons rendered as links (Button asChild) keep their own colours. */
+a:where(:not([data-slot="button"])) { color: inherit; }
+a[data-slot] { text-decoration: none; }
 button:focus-visible, a:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 5px; }
 
 [data-sonner-toast] .toast-description { color: var(--text-muted); }

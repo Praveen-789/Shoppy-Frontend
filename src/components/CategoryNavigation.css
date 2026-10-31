@@ -1,5 +1,5 @@
 .category-navigation-anchor { height: 1px; margin-bottom: -1px; pointer-events: none; }
-.category-navigation { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--border); }
+.category-navigation { position: sticky; top: var(--shop-header-height, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--border); }
 .category-navigation-scroll { display: flex; align-items: stretch; gap: 12px; max-width: 1208px; padding: 0 24px; margin: 0 auto; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--border-strong) var(--surface); }
 .category-navigation .category-navigation-item { position: relative; flex: 1 0 112px; min-width: 0; flex-direction: column; gap: 2px; height: auto; min-height: 78px; padding: 8px 8px 10px; border: 0; border-radius: 0; background: var(--surface); color: var(--text-muted); font-size: 13px; font-weight: 400; }
 .category-navigation-item::after { content: ''; position: absolute; bottom: 0; left: 12px; right: 12px; height: 3px; border-radius: 3px 3px 0 0; background: transparent; }

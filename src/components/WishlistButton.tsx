@@ -3,6 +3,7 @@ import { useRequireSignIn } from '../auth/useRequireSignIn'
 import { useAuth } from '../auth/useAuth'
 import { EMPTY_WISHLIST, useWishlistStore } from '../stores/wishlistStore'
 import type { WishlistProduct } from '../stores/wishlistStore'
+import { Button } from './ui/button'
 
 interface Props {
   product: WishlistProduct
@@ -36,6 +37,8 @@ export default function WishlistButton({ product, variant = 'text' }: Props) {
   }
 
   return <div className="wishlist-control">
-    <button aria-pressed={Boolean(saved)} aria-label={label} disabled={disabled} onClick={toggle}>{saved ? 'Saved to wishlist' : 'Save to wishlist'}</button>
+    <Button variant="outline" size="lg" className="w-full" aria-pressed={Boolean(saved)} aria-label={label} disabled={disabled} onClick={toggle}>
+      <Heart aria-hidden="true" strokeWidth={1.8} fill={saved ? 'currentColor' : 'none'} />{saved ? 'Saved to wishlist' : 'Save to wishlist'}
+    </Button>
   </div>
 }

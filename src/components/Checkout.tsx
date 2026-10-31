@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import { EMPTY_CART, useCartStore } from '../stores/cartStore'
 import ShopHeader from './ShopHeader'
+import PageHeader from './PageHeader'
+import { Button } from './ui/button'
 import './Orders.css'
 import { addressFields as fields } from './addressFields'
 
@@ -68,9 +70,9 @@ export default function Checkout() {
   }
   if (!user) return null
   return <div className="shop-page"><ShopHeader disabled={submitting || retryPending} /><main className="shop-content">
-    <section className="shop-intro"><span className="shop-eyebrow">ONE MORE STEP</span><h1>Checkout</h1><p>Cash on delivery ·  Free delivery within India</p></section>
+    <PageHeader eyebrow="One more step" title="Checkout" description="Cash on delivery · Free delivery within India" />
     {error && <p role="alert" className="order-error">{error}</p>}
-    {cartError && <p role="alert">{cartError} <button onClick={() => void loadCart(userId)} disabled={cartBusy || submitting}>Refresh cart</button></p>}
+    {cartError && <p role="alert">{cartError} <Button variant="outline" size="sm" onClick={() => void loadCart(userId)} disabled={cartBusy || submitting}>Refresh cart</Button></p>}
     {items?.length === 0 && !retryPending ? <div className="shop-state"><p>{cartBusy ? 'Loading your cart…' : 'Your cart is empty.'}</p><Link to="/shop">Browse products</Link></div> :
       <form className="cart-layout" onSubmit={submit}>
         <section className="checkout-address"><h2>Delivery address</h2>
@@ -90,8 +92,8 @@ export default function Checkout() {
           <p>Payment: Cash on Delivery. Pay the total when your order arrives.</p>
           {unavailable && <p role="alert">Some items are unavailable or exceed stock. <Link to="/cart">Update your cart</Link>.</p>}
           {retryPending && <p role="status">Your order result could not be confirmed. Retry with the same details, or check <Link to="/orders">My orders</Link> before starting another checkout.</p>}
-          <button type="submit" disabled={submitting || (!retryPending && (cartBusy || !!cartError || unavailable || items.length === 0))}>{submitting ? 'Placing order…' : retryPending ? 'Retry / confirm order' : 'Place order · Cash on Delivery'}</button>
-          <Link to="/cart">Back to cart</Link>
+          <Button type="submit" size="lg" className="w-full" disabled={submitting || (!retryPending && (cartBusy || !!cartError || unavailable || items.length === 0))}>{submitting ? 'Placing order…' : retryPending ? 'Retry / confirm order' : 'Place order · Cash on Delivery'}</Button>
+          <Button asChild variant="link" className="px-0"><Link to="/cart">Back to cart</Link></Button>
         </aside>
       </form>}
   </main></div>

@@ -6,7 +6,7 @@
 .story-content { margin: auto; padding-top: 54px; max-width: 420px; width: 100%; }
 .eyebrow, .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; }
 .eyebrow { color: var(--text-muted); }
-h1 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(44px, 4.6vw, 67px); letter-spacing: -2.4px; line-height: 1.06; margin: 22px 0; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(44px, 4.6vw, 67px); letter-spacing: -2.4px; line-height: 1.06; margin: 22px 0; }
 .story-content > p { color: var(--text-muted); max-width: 310px; font-size: 15px; line-height: 1.8; }
 /* The shopping bags are artwork, so they keep their own paint in both themes. */
 .shopping-art { height: 280px; position: relative; margin: 12px 0 22px; }
@@ -15,7 +15,7 @@ h1 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size
 .large-handle, .small-handle { position: absolute; border: 7px solid; border-bottom: 0; border-radius: 40px 40px 0 0; width: 62px; height: 62px; top: -46px; left: 46px; color: #315847; }
 .large-bag > svg { width: 43px; height: 43px; }
 .large-bag > span { font-size: 24px; font-weight: 700; letter-spacing: -1px; margin-top: 7px; }
-.small-bag { position: absolute; width: 124px; height: 143px; top: 99px; left: 61px; background: #cfa27e; transform: rotate(-12deg); border-radius: 3px 3px 7px 7px; display: grid; place-items: center; color: #654731; font-family: Georgia, serif; font-size: 28px; line-height: 1; box-shadow: 0 13px 20px var(--shadow); }
+.small-bag { position: absolute; width: 124px; height: 143px; top: 99px; left: 61px; background: #cfa27e; transform: rotate(-12deg); border-radius: 3px 3px 7px 7px; display: grid; place-items: center; color: #654731; font-family: var(--font-display); font-size: 28px; line-height: 1; box-shadow: 0 13px 20px var(--shadow); }
 .small-handle { width: 50px; height: 48px; left: 37px; top: -35px; border-width: 6px; color: #bd906c; }
 .art-spark { position: absolute; color: var(--accent); font-size: 35px; }
 .spark-one { left: 28px; top: 39px; }

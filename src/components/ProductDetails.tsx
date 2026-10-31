@@ -9,6 +9,7 @@ import ShopHeader from './ShopHeader'
 import WishlistButton from './WishlistButton'
 import ProductGallery from './ProductGallery'
 import ProductReviews from './ProductReviews'
+import { Button } from './ui/button'
 import './ProductDetails.css'
 
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' })
@@ -72,7 +73,7 @@ function ProductDetailsContent({ id }: { id: string | undefined }) {
       <Link className="details-back" to="/shop">← Back to shop</Link>
       {loading ? <p className="shop-state" role="status">Loading product…</p> : unavailable ?
         <div className="shop-state"><h1>Product unavailable</h1><p>This product may have been removed or unpublished. Browse the shop for more finds.</p></div> : error ?
-        <div className="shop-state" role="alert"><p>{error}</p><button onClick={() => setRetry(value => value + 1)}>Try again</button></div> : product &&
+        <div className="shop-state" role="alert"><p>{error}</p><Button variant="outline" onClick={() => setRetry(value => value + 1)}>Try again</Button></div> : product &&
         <article className="product-details">
           <ProductGallery product={product} />
           <div className="details-info">
@@ -96,7 +97,7 @@ function ProductDetailsContent({ id }: { id: string | undefined }) {
               <input id="details-quantity" type="number" min="1" max={Math.max(1, remaining)} step="1" value={quantity} disabled={remaining === 0 || busy || refreshing} onChange={event => { setQuantity(event.target.value); setNotice('') }} />
               {inCart > 0 && <p>{inCart} already in your cart. <Link to="/cart">View cart →</Link></p>}
               {remaining > 0 && !validQuantity && <p role="alert">Choose a whole number from 1 to {remaining}.</p>}
-              <button className="details-add-button" type="submit" disabled={checkingSession || !validQuantity || busy || refreshing}>{busy ? 'Updating cart…' : product.stock === 0 ? 'Sold out' : remaining === 0 ? 'All available stock is in your cart' : 'Add to cart'}</button>
+              <Button className="details-add-button w-full" size="lg" type="submit" disabled={checkingSession || !validQuantity || busy || refreshing}>{busy ? 'Updating cart…' : product.stock === 0 ? 'Sold out' : remaining === 0 ? 'All available stock is in your cart' : 'Add to cart'}</Button>
             </form>
             <WishlistButton product={product} />
             {notice && <p className="shop-message" role="status">{notice} <Link to="/cart">Go to cart →</Link></p>}

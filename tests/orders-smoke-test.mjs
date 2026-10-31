@@ -6,12 +6,15 @@ import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 const files = []
-async function compile(source, name) {
+async function compile(source, name, rewrites = {}) {
   const file = new URL(`../.orders-test-${process.pid}-${name}.mjs`, import.meta.url)
   const output = ts.transpileModule(await readFile(new URL(source, import.meta.url), 'utf8'), {
     compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.ReactJSX },
   })
-  await writeFile(file, output.outputText)
+  // Compiled files live in the project root, so imports of other source files are pointed at their compiled copies.
+  let code = output.outputText
+  for (const [from, to] of Object.entries(rewrites)) code = code.replaceAll(`'${from}'`, `'${to}'`).replaceAll(`"${from}"`, `"${to}"`)
+  await writeFile(file, code)
   files.push(file)
   return import(file.href)
 }
@@ -31,7 +34,8 @@ try {
   assert.equal(paymentLabel('not_required'), 'No payment due')
   assert.equal(paymentLabel('pending'), 'Payment pending')
   assert.equal(statusLabel('cancelled'), 'Cancelled')
-  const { default: Confirmation } = await compile('../src/components/OrderCancellation.tsx', 'confirmation')
+  await compile('../src/components/ui/button.tsx', 'button')
+  const { default: Confirmation } = await compile('../src/components/OrderCancellation.tsx', 'confirmation', { './ui/button': `./.orders-test-${process.pid}-button.mjs` })
   const markup = renderToStaticMarkup(React.createElement(Confirmation, { orderId: 'test', onSaved() {}, onClose() {} }))
   assert.match(markup, /all remaining items from every seller/)
   assert.match(markup, /No payment will be due/)

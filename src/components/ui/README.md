@@ -7,7 +7,10 @@ npx shadcn add input dialog
 The CLI puts editable React components here. Use @/lib/utils for cn().
 Tailwind utilities and dark: variants work with our existing data-theme attribute.
 Our CSS entry is src/index.css. Tailwind Preflight is intentionally not enabled,
-so existing screens retain their styling during the gradual migration.
+so existing screens retain their styling during the gradual migration. Instead,
+index.css resets every element that carries a data-slot attribute (border: 0 solid,
+margin 0, transparent button background), which is all shadcn needs. Tooltips need
+the TooltipProvider already placed in main.tsx.
 
 Existing unlayered page CSS (for example .shop-page button) can override Tailwind
 utilities. When adopting a component on a page, narrow those old selectors or

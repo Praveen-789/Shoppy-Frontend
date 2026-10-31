@@ -5,6 +5,7 @@ import { listVendorProducts } from '../vendorApi'
 import type { VendorProduct } from '../vendorApi'
 import VendorProductEditor from './VendorProductEditor'
 import ShopHeader from './ShopHeader'
+import PageHeader from './PageHeader'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import './Products.css'
@@ -65,10 +66,9 @@ export default function VendorDashboard() {
     <ShopHeader disabled={saving} />
     <main className="shop-content">
       {sessionMessage && <p role="status">{sessionMessage}</p>}
-      <section className="vendor-heading">
-        <div><span className="shop-eyebrow"><Store size={14} aria-hidden="true" />YOUR STORE / CATALOGUE</span><h1>My products<span>.</span></h1><p>Your ideas, ready for their next home. Manage everything you sell.</p></div>
-        <Button disabled={saving} size="lg" onClick={() => openForm()}><Plus />Add product</Button>
-      </section>
+      <PageHeader eyebrow={<><Store size={14} aria-hidden="true" />Your store / Catalogue</>} title={<>My products<span>.</span></>}
+        description="Your ideas, ready for their next home. Manage everything you sell."
+        actions={<Button disabled={saving} size="lg" onClick={() => openForm()}><Plus />Add product</Button>} />
       {notice && <p className="vendor-notice" role="status"><Check size={18} aria-hidden="true" />{notice}</p>}
       {formOpen && <VendorProductEditor key={editingProduct?._id || 'new'} product={editingProduct}
         onClose={() => setFormOpen(false)} onSaved={saved} onBusyChange={setSaving}

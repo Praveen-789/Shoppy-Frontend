@@ -33,9 +33,12 @@ export default function CategoryNavigation({ categories, selected, onSelect }: P
     if (!anchor.current) return
     // Observe a stable marker before the bar. Watching the bar itself would
     // retrigger the observer when its height changes and could make it flicker.
+    // The bar sticks below the sticky shop header, so "scrolled past" means the
+    // marker has gone under the header, not under the top edge of the window.
+    const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--shop-header-height')) || 0
     const observer = new IntersectionObserver(([entry]) => {
-      setCompact(!entry.isIntersecting && entry.boundingClientRect.top < 0)
-    })
+      setCompact(!entry.isIntersecting && entry.boundingClientRect.top < headerHeight)
+    }, { rootMargin: `-${headerHeight}px 0px 0px 0px` })
     observer.observe(anchor.current)
     return () => observer.disconnect()
   }, [])

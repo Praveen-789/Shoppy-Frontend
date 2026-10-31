@@ -1,6 +1,9 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useAuth } from '../auth/useAuth'
+import { RefreshCw } from 'lucide-react'
 import ShopHeader from './ShopHeader'
+import PageHeader from './PageHeader'
+import { Button } from './ui/button'
 import './VendorSales.css'
 import type { SalesReport } from '../vendorSalesTypes'
 
@@ -53,7 +56,8 @@ export default function VendorSales() {
   const periodLabel = period.from && period.to ? `${period.from} to ${period.to}`
     : period.from ? `From ${period.from}` : period.to ? `Through ${period.to}` : 'All time'
   return <div className="shop-page"><ShopHeader /><main className="shop-content sales-content">
-    <section className="shop-intro"><span className="shop-eyebrow">YOUR STORE</span><h1>Your sales, at a glance.</h1><p>See what is selling and how much cash has been collected.</p></section>
+    <PageHeader eyebrow="Your store" title="Your sales, at a glance." description="See what is selling and how much cash has been collected."
+      actions={<Button variant="outline" disabled={loading} onClick={() => setRefresh(value => value + 1)}><RefreshCw aria-hidden="true" />Refresh sales</Button>} />
     <form className="sales-filters" onSubmit={event => {
       event.preventDefault()
       if (from && to && from > to) { setFilterError('Choose an end date on or after the start date.'); return }
@@ -62,9 +66,8 @@ export default function VendorSales() {
     }}>
       <label htmlFor="sales-from">From<input id="sales-from" type="date" value={from} onChange={event => setFrom(event.target.value)} /></label>
       <label htmlFor="sales-to">To<input id="sales-to" type="date" value={to} onChange={event => setTo(event.target.value)} /></label>
-      <button type="submit" disabled={loading}>Apply dates</button>
-      <button type="button" disabled={loading} onClick={() => { setFrom(''); setTo(''); setFilterError(''); setPeriod({ from: '', to: '' }) }}>All time</button>
-      <button type="button" disabled={loading} onClick={() => setRefresh(value => value + 1)}>Refresh sales</button>
+      <Button type="submit" size="lg" disabled={loading}>Apply dates</Button>
+      <Button type="button" variant="outline" size="lg" disabled={loading} onClick={() => { setFrom(''); setTo(''); setFilterError(''); setPeriod({ from: '', to: '' }) }}>All time</Button>
     </form>
     <p className="sales-help"><a href={`/api/vendor/sales/export.xlsx?${exportParams}`}>Download Excel</a> · <a href={`/api/vendor/sales/export.csv?${exportParams}`}>Download CSV</a></p>
     <p className="sales-help">Downloads use your applied dates and include orders awaiting delivery. Excel supports up to 10,000 product rows; use CSV for larger reports.</p>
@@ -72,7 +75,7 @@ export default function VendorSales() {
     <p className="sales-period">{periodLabel} · India time</p>
     <p className="sales-help">Dates select when orders were placed. Totals show their current delivery and cash collection progress.</p>
     {loading && <p className="shop-state" role="status">Loading your sales…</p>}
-    {error && <div className="sales-error" role="alert"><p>{error}</p><button onClick={() => setRefresh(value => value + 1)}>Try again</button></div>}
+    {error && <div className="sales-error" role="alert"><p>{error}</p><Button variant="outline" onClick={() => setRefresh(value => value + 1)}>Try again</Button></div>}
     {!loading && !error && report && <>
       {report.summary.orderCount === 0 && <p className="sales-empty" role="status">No orders in this period yet. Your next sale will appear here.</p>}
       <section className="sales-grid" aria-label="Sales summary">

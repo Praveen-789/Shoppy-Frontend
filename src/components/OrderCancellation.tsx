@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import type { CustomerOrder, OrderItem } from '../orderTypes'
+import { Button } from './ui/button'
 
 interface Props {
   orderId: string
@@ -60,10 +61,10 @@ export default function OrderCancellation({ orderId, item, onSaved, onClose }: P
     {error && <p className="order-error" role="alert">{error} Refresh orders to check the latest status before trying again.</p>}
     {saving && <p role="status">Cancelling your order…</p>}
     <div className="order-address-actions">
-      <button type="button" autoFocus disabled={saving} onClick={onClose}>{error ? 'Refresh orders' : item ? 'Keep product' : 'Keep order'}</button>
-      <button type="button" className="order-cancel-button" disabled={saving || Boolean(error)} onClick={() => void cancelOrder()}>
+      <Button type="button" variant="outline" autoFocus disabled={saving} onClick={onClose}>{error ? 'Refresh orders' : item ? 'Keep product' : 'Keep order'}</Button>
+      <Button type="button" variant="destructive" disabled={saving || Boolean(error)} onClick={() => void cancelOrder()}>
         {saving ? 'Cancelling…' : item ? 'Yes, cancel product' : 'Yes, cancel entire order'}
-      </button>
+      </Button>
     </div>
   </dialog>
 }

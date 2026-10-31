@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { toast } from 'sonner'
 import { addressFields } from './addressFields'
 import type { DeliveryAddress } from './addressFields'
+import { Button } from './ui/button'
 
 interface Props {
   orderId: string
@@ -64,8 +65,8 @@ export default function OrderAddressEditor({ orderId, initialAddress, onSaved, o
     </fieldset>
     {error && <p className="order-error" role="alert">{error}</p>}
     <div className="order-address-actions">
-      <button type="submit" disabled={saving || locked}>{saving ? 'Saving…' : 'Save address'}</button>
-      <button type="button" disabled={saving} onClick={onCancel}>Cancel</button>
+      <Button type="submit" disabled={saving || locked}>{saving ? 'Saving…' : 'Save address'}</Button>
+      <Button type="button" variant="outline" disabled={saving} onClick={onCancel}>Cancel</Button>
     </div>
   </form>
 }

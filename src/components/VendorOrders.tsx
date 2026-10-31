@@ -3,8 +3,11 @@ import { toast } from 'sonner'
 import { useAuth } from '../auth/useAuth'
 import { nextFulfilmentStatus, statusLabel, paymentLabel, payableAmount } from '../orderTypes'
 import type { VendorOrder } from '../orderTypes'
+import { ArrowLeft, ArrowRight, RefreshCw } from 'lucide-react'
 import ShopHeader from './ShopHeader'
+import PageHeader from './PageHeader'
 import OrderTimeline from './OrderTimeline'
+import { Button } from './ui/button'
 import './Orders.css'
 
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' })
@@ -73,8 +76,8 @@ export default function VendorOrders() {
   }
   if (!user || user.role !== 'vendor') return null
   return <div className="shop-page"><ShopHeader disabled={savingId !== null} /><main className="shop-content">
-    <section className="shop-intro"><span className="shop-eyebrow">YOUR STORE</span><h1>Incoming orders</h1><p>Prepare your products, update delivery progress, and record collected cash.</p></section>
-    <div className="order-list-actions"><button disabled={loading || savingId !== null} onClick={() => setRefresh(value => value + 1)}>Refresh orders</button><span>Page {page}</span></div>
+    <PageHeader eyebrow="Your store" title="Incoming orders" description="Prepare your products, update delivery progress, and record collected cash."
+      actions={<Button variant="outline" disabled={loading || savingId !== null} onClick={() => setRefresh(value => value + 1)}><RefreshCw aria-hidden="true" />Refresh orders</Button>} />
     {error && <p className="order-error" role="alert">{error}</p>}
     {loading && <p role="status">Loading incoming orders…</p>}
     {!loading && !error && orders.length === 0 && <p className="shop-state">No orders for your products yet.</p>}
@@ -97,12 +100,12 @@ export default function VendorOrders() {
           {next === 'delivered' && <label className="cash-confirm"><input type="checkbox" checked={cashChecks[order._id] || false}
             disabled={loading || savingId !== null} onChange={event => setCashChecks(current => ({ ...current, [order._id]: event.target.checked }))} />
             I confirm delivery and collection of {currency.format(payableAmount(order) / 100)} cash.</label>}
-          <button disabled={loading || savingId !== null || (next === 'delivered' && !cashChecks[order._id])} onClick={() => void advance(order)}>
+          <Button size="lg" disabled={loading || savingId !== null || (next === 'delivered' && !cashChecks[order._id])} onClick={() => void advance(order)}>
             {savingId === order._id ? 'Updating…' : next === 'delivered' ? 'Mark delivered & cash collected' : `Mark ${statusLabel(next).toLowerCase()}`}
-          </button>
+          </Button>
         </div>}
       </article>
     })}</div>
-    <div className="order-list-actions"><button disabled={loading || savingId !== null || page === 1} onClick={() => setPage(value => value - 1)}>Previous</button><button disabled={loading || savingId !== null || !hasMore} onClick={() => setPage(value => value + 1)}>Next</button></div>
+    <div className="order-list-actions"><Button variant="outline" disabled={loading || savingId !== null || page === 1} onClick={() => setPage(value => value - 1)}><ArrowLeft aria-hidden="true" />Previous</Button><span>Page {page}</span><Button variant="outline" disabled={loading || savingId !== null || !hasMore} onClick={() => setPage(value => value + 1)}>Next<ArrowRight aria-hidden="true" /></Button></div>
   </main></div>
 }

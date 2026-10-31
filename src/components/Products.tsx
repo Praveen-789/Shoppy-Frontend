@@ -109,7 +109,7 @@ export default function Products() {
           <section className="catalog-results" aria-label="Product results" aria-busy={loading || searching}>
           {filterCount > 0 && <div className="active-filter-summary"><span>{filterCount} active {filterCount === 1 ? 'filter' : 'filters'}</span><Button variant="ghost" size="sm" onClick={() => applyFilters(emptyProductFilters())}>Clear filters</Button></div>}
         {searching || (loading && query.page === 1) ? <p className="shop-state" role="status">Finding the good stuff…</p> : error && products.length === 0 ? (
-          <div className="shop-state" role="alert"><p>{error}</p><button onClick={() => setRetry(value => value + 1)}>Try again</button></div>
+          <div className="shop-state" role="alert"><p>{error}</p><Button variant="outline" onClick={() => setRetry(value => value + 1)}>Try again</Button></div>
         ) : products?.length === 0 ? <div className="shop-state" role="status"><p>{query.search || query.category || filterCount ? 'No products match. Try another search or adjust your filters.' : 'Our shelves are getting ready. Check back soon!'}</p>{filterCount > 0 && <Button variant="outline" onClick={() => applyFilters(emptyProductFilters())}>Reset filters</Button>}</div> : (
           <>
             <p className="shop-count" role="status">Showing {products.length} of {total} {total === 1 ? 'product' : 'products'}</p>
@@ -133,7 +133,7 @@ export default function Products() {
                         <Link className="product-cart-link" to="/cart" aria-label={`Go to cart, ${product.name} is added`}>Go to cart →</Link>
                       </>
                     ) : (
-                      <button disabled={checkingSession || cartBusy || product.stock === 0} onClick={async () => {
+                      <Button size="lg" className="w-full" disabled={checkingSession || cartBusy || product.stock === 0} onClick={async () => {
                         if (!user) { requireSignIn(); return }
                         setCartNotice('')
                         setAddingProductId(product._id)
@@ -143,13 +143,13 @@ export default function Products() {
                         } finally {
                           setAddingProductId(null)
                         }
-                      }}>{addingProductId === product._id ? 'Adding…' : product.stock === 0 ? 'Sold out' : 'Add to cart'}</button>
+                      }}>{addingProductId === product._id ? 'Adding…' : product.stock === 0 ? 'Sold out' : 'Add to cart'}</Button>
                     )}
                   </div>
                 </article>
               ))}</div>
             <div className="shop-load-more">
-              {error ? <div role="alert"><p>{error}</p><button onClick={() => setRetry(value => value + 1)} disabled={loading}>Try again</button></div> : hasMore && <button disabled={loading} onClick={() => { setLoading(true); setQuery(current => ({ ...current, page: current.page + 1 })) }}>{loading ? 'Loading…' : 'Load more products'}</button>}
+              {error ? <div role="alert"><p>{error}</p><Button variant="outline" onClick={() => setRetry(value => value + 1)} disabled={loading}>Try again</Button></div> : hasMore && <Button variant="outline" size="lg" disabled={loading} onClick={() => { setLoading(true); setQuery(current => ({ ...current, page: current.page + 1 })) }}>{loading ? 'Loading…' : 'Load more products'}</Button>}
               {loading && <p role="status">Loading more products…</p>}
             </div>
           </>

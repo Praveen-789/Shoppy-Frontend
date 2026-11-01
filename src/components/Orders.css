@@ -40,3 +40,13 @@
 
 .order-item-details { display: grid; justify-items: start; gap: 8px; min-width: 0; }
 .order-item-cancel { color: var(--error); }
+.order-item-review { display: grid; justify-items: start; gap: 8px; }
+.order-item-review p { margin: 0; }
+.order-item-product { display: flex; align-items: flex-start; gap: 14px; min-width: 0; }
+.order-item-image { position: relative; display: grid; place-items: center; flex: 0 0 64px; width: 64px; height: 64px; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text-muted); text-decoration: none; font-size: 24px; }
+.order-item-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--surface); }
+.order-item-image:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+@media (max-width: 580px) {
+  .vendor-order-portion li:has(.order-item-product) { flex-wrap: wrap; }
+  .order-item-product { flex: 1 1 100%; }
+}

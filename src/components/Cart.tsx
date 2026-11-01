@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 import { EMPTY_CART, useCartStore } from '../stores/cartStore'
 import { Minus, Plus, RefreshCw, Trash2 } from 'lucide-react'
 import ShopHeader from './ShopHeader'
@@ -12,6 +13,7 @@ const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: '
 
 export default function Cart() {
   const { user, message } = useAuth()
+  useDocumentTitle('Your cart')
   const userId = user?.id || ''
   const items = useCartStore(state => state.carts[userId] || EMPTY_CART)
   const setQuantity = useCartStore(state => state.setQuantity)

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, Package, Plus, RefreshCw, Store } from 'lucide-react'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 import { listVendorProducts } from '../vendorApi'
 import type { VendorProduct } from '../vendorApi'
 import VendorProductEditor from './VendorProductEditor'
@@ -15,6 +16,7 @@ const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: '
 
 export default function VendorDashboard() {
   const { user, message: sessionMessage } = useAuth()
+  useDocumentTitle('My products')
   const [products, setProducts] = useState<VendorProduct[]>([])
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)

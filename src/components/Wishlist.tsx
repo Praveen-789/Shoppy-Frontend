@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 import { EMPTY_WISHLIST, useWishlistStore } from '../stores/wishlistStore'
 import { EMPTY_CART, useCartStore } from '../stores/cartStore'
 import { RefreshCw } from 'lucide-react'
@@ -11,6 +12,7 @@ import './Products.css'
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' })
 export default function Wishlist() {
   const { user } = useAuth()
+  useDocumentTitle('Your wishlist')
   const userId = user?.id || ''
   const items = useWishlistStore(state => state.wishlists[userId] || EMPTY_WISHLIST)
   const busy = useWishlistStore(state => state.busy)

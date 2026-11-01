@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 import { RefreshCw } from 'lucide-react'
 import ShopHeader from './ShopHeader'
 import PageHeader from './PageHeader'
@@ -13,6 +14,7 @@ const money = (paise: number) => currency.format(paise / 100)
 
 export default function VendorSales() {
   const { user } = useAuth()
+  useDocumentTitle('Sales')
   const userId = user?.id
   const role = user?.role
   const [from, setFrom] = useState('')

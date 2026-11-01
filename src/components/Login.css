@@ -51,6 +51,12 @@ form input:focus { outline: 2px solid var(--focus-ring); outline-offset: 2px; bo
 .sign-in-button span { font-size: 18px; line-height: 16px; }
 .form-message { font-size: 12px; line-height: 1.6; color: var(--text-muted); margin: 12px 0 0; }
 .form-message:empty { display: none; }
+.login-divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; color: var(--text-muted); font-size: 12px; }
+.login-divider::before, .login-divider::after { content: ''; flex: 1; border-top: 1px solid var(--border); }
+.google-sign-in-button { width: 100%; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); color: var(--text); padding: 15px 20px; font: inherit; font-size: 13px; font-weight: 600; }
+.google-sign-in-button:hover { background: var(--surface-soft); }
+.google-sign-in-button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.google-sign-in-button:disabled { opacity: .6; cursor: wait; }
 .account-type { margin: 20px 0; }
 .account-type select { width: 100%; padding: 13px; border: 1px solid var(--border); border-radius: 7px; font: inherit; background: var(--surface); color: var(--text); }
 .account-type p { color: var(--text-muted); font-size: 12px; }

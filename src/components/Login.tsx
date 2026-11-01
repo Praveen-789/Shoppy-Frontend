@@ -1,8 +1,10 @@
 ﻿import { useState } from 'react'
 import type { SubmitEvent } from 'react'
+import { useEffect } from 'react'
 import './Login.css'
 import ThemeToggle from './ThemeToggle'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 
@@ -15,6 +17,30 @@ function Login() {
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from as string | undefined
+  const [googleEnabled, setGoogleEnabled] = useState(false)
+  const [signupRole, setSignupRole] = useState('user')
+  const [googleBusy, setGoogleBusy] = useState(false)
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch('/api/auth/google/config', { signal: controller.signal })
+      .then(response => response.ok ? response.json() : null)
+      .then(data => { if (!controller.signal.aborted) setGoogleEnabled(data?.enabled === true) })
+      .catch(() => {})
+    return () => controller.abort()
+  }, [])
+  const googleErrors: Record<string, string> = {
+    unavailable: 'Google sign-in is not configured yet. Please use email and password.',
+    cancelled: 'Google sign-in was cancelled. You can try again.',
+    existing: 'This email already has a Shoppy account. Please sign in with your password. Google account linking is not available yet.',
+    failed: 'Google sign-in could not be completed. Please try again.',
+  }
+  const googleError = googleErrors[new URLSearchParams(location.search).get('googleError') || ''] || ''
+  function signInWithGoogle() {
+    setGoogleBusy(true)
+    const query = new URLSearchParams({ role: registering ? signupRole : 'user' })
+    if (typeof from === 'string') query.set('returnTo', from)
+    window.location.assign(`/api/auth/google?${query}`)
+  }
   function destination(role: string) {
     if (typeof from === 'string' && (['/shop', '/cart', '/wishlist', '/checkout', '/orders'].includes(from) || /^\/shop\/products\/[a-zA-Z0-9_-]+$/.test(from) || (role === 'vendor' && ['/vendor', '/vendor/orders', '/vendor/sales'].includes(from)))) return from
     return role === 'vendor' ? '/vendor' : '/shop'
@@ -23,6 +49,7 @@ function Login() {
   const [message, setMessage] = useState('')
 
   const [registering, setRegistering] = useState(false)
+  useDocumentTitle(registering ? 'Create account' : 'Sign in')
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     if (busy) return
@@ -73,7 +100,7 @@ function Login() {
           <Link to="/shop">Continue browsing without signing in →</Link>
                     {checkingSession ? <p role="status">Checking your session...</p> : <form onSubmit={handleSubmit}>
             {registering && <><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" maxLength={80} required /></>}
-            {registering && <div className="account-type"><label htmlFor="role">I want to</label><select id="role" name="role" defaultValue="user"><option value="user">Shop — user account</option><option value="vendor">Sell on Shoppy — vendor account</option></select><p>Vendors can publish products and shop too.</p></div>}
+            {registering && <div className="account-type"><label htmlFor="role">I want to</label><select id="role" name="role" value={signupRole} onChange={event => setSignupRole(event.target.value)}><option value="user">Shop — user account</option><option value="vendor">Sell on Shoppy — vendor account</option></select><p>Vendors can publish products and shop too.</p></div>}
             <label htmlFor="email">Email address</label>
             <input id="email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required />
             <div className="password-label"><label htmlFor="password">Password</label><button className="text-button forgot-button" type="button" onClick={() => setMessage('Password recovery is not implemented yet.')}>Forgot password?</button></div>
@@ -83,8 +110,9 @@ function Login() {
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" stroke="currentColor" strokeWidth="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6"/>{showPassword && <path d="m4 3 16 18" stroke="currentColor" strokeWidth="1.6"/>}</svg>
               </button>
             </div>
-            <button className="sign-in-button" type="submit" disabled={busy}>{busy ? "Please wait..." : registering ? "Create account" : "Sign in"} <span aria-hidden="true">→</span></button>
-            <p className="form-message" role="status">{message || authMessage}</p>
+            <button className="sign-in-button" type="submit" disabled={busy || googleBusy}>{busy ? "Please wait..." : registering ? "Create account" : "Sign in"} <span aria-hidden="true">→</span></button>
+            {googleEnabled && <><div className="login-divider">or</div><button className="google-sign-in-button" type="button" disabled={busy || googleBusy} onClick={signInWithGoogle}>{googleBusy ? 'Opening Google...' : 'Continue with Google'}</button></>}
+            <p className="form-message" role="status">{message || authMessage || googleError}</p>
           </form>}
           <div className="security-note"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="1.5"/></svg>A little peace of mind, with every sign-in.</div>
         </div>

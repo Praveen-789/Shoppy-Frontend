@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { toast } from 'sonner'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 import { EMPTY_CART, useCartStore } from '../stores/cartStore'
 import ShopHeader from './ShopHeader'
 import PageHeader from './PageHeader'
@@ -16,6 +17,7 @@ interface Attempt { checkoutKey: string; address: Record<string, string>; items:
 
 export default function Checkout() {
   const { user } = useAuth()
+  useDocumentTitle('Checkout')
   const userId = user?.id || ''
   const items = useCartStore(state => state.carts[userId] || EMPTY_CART)
   const cartBusy = useCartStore(state => state.busy || state.refreshing)

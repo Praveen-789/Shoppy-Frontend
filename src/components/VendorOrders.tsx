@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 import { nextFulfilmentStatus, statusLabel, paymentLabel, payableAmount } from '../orderTypes'
 import type { VendorOrder } from '../orderTypes'
 import { ArrowLeft, ArrowRight, RefreshCw } from 'lucide-react'
@@ -13,6 +14,7 @@ import './Orders.css'
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' })
 export default function VendorOrders() {
   const { user } = useAuth()
+  useDocumentTitle('Incoming orders')
   const [orders, setOrders] = useState<VendorOrder[]>([])
   const [page, setPage] = useState(1)
   const [refresh, setRefresh] = useState(0)

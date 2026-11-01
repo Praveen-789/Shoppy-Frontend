@@ -10,6 +10,13 @@ import Wishlist from './components/Wishlist'
 import Checkout from './components/Checkout'
 import Orders from './components/Orders'
 import ProtectedRoute from './auth/ProtectedRoute'
+import { useDocumentTitle } from './useDocumentTitle'
+
+// The only page without its own component file, so it sets its tab title here.
+function NotFound() {
+  useDocumentTitle('Page not found')
+  return <main className="shop-state"><h1>Page not found</h1><a href="/shop">Back to shop</a></main>
+}
 
 function App() {
   return <Routes>
@@ -28,7 +35,7 @@ function App() {
       <Route path="/vendor/orders" element={<VendorOrders />} />
       <Route path="/vendor/sales" element={<VendorSales />} />
     </Route>
-    <Route path="*" element={<main className="shop-state"><h1>Page not found</h1><a href="/shop">Back to shop</a></main>} />
+    <Route path="*" element={<NotFound />} />
   </Routes>
 }
 export default App

@@ -19,7 +19,7 @@ async function compile(source, name, rewrites = {}) {
   return import(file.href)
 }
 try {
-  const { canCancelOrder, canCancelItem, payableAmount, nextFulfilmentStatus, paymentLabel, statusLabel } = await compile('../src/orderTypes.ts', 'types')
+  const { canCancelOrder, canCancelItem, canReviewItem, payableAmount, nextFulfilmentStatus, paymentLabel, statusLabel } = await compile('../src/orderTypes.ts', 'types')
   const order = { status: 'placed', paymentStatus: 'pending', vendorOrders: [
     { status: 'placed', paymentStatus: 'pending' }, { status: 'placed', paymentStatus: 'pending' },
   ] }
@@ -51,6 +51,16 @@ try {
   assert.equal(canCancelItem(partial, { ...item, status: 'cancelled' }), false)
   assert.equal(canCancelItem({ ...partial, status: 'cancelled' }, item), false)
   assert.equal(canCancelOrder(partial), false)
+  const partlyDelivered = { ...partial, status: 'partially_delivered', vendorOrders: [
+    { vendor: 'a', status: 'delivered', paymentStatus: 'collected' },
+    { vendor: 'b', status: 'shipped', paymentStatus: 'pending' },
+  ] }
+  assert.equal(canReviewItem(partlyDelivered, item), true, 'A delivered seller portion can be reviewed while another is in transit')
+  assert.equal(canReviewItem(partlyDelivered, { ...item, vendor: 'b' }), false)
+  assert.equal(canReviewItem(partlyDelivered, { ...item, status: 'cancelled' }), false)
+  assert.equal(canReviewItem({ ...partlyDelivered, status: 'cancelled' }, item), false)
+  assert.equal(canReviewItem(partlyDelivered, { ...item, vendor: 'missing' }), false)
+  assert.equal(canReviewItem(partial, item), false)
   assert.equal(canCancelOrder({ ...order, vendorOrders: [order.vendorOrders[0], { status: 'cancelled', paymentStatus: 'not_required' }] }), true)
   assert.equal(payableAmount({ status: 'placed', totalPaise: 10000, payablePaise: 4000 }), 4000)
   assert.equal(payableAmount({ status: 'placed', subtotalPaise: 10000 }), 10000)
@@ -62,7 +72,7 @@ try {
   assert.match(itemMarkup, /Keep product/)
   assert.match(itemMarkup, /Yes, cancel product/)
   assert.doesNotMatch(itemMarkup, /No payment will be due/)
-  console.log('PASS: cancellation eligibility, terminal vendor states, payment labels and confirmation content')
+  console.log('PASS: cancellation and review eligibility, terminal vendor states, payment labels and confirmation content')
 } finally {
   await Promise.all(files.map(file => unlink(file)))
 }

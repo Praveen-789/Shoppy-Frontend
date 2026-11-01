@@ -13,7 +13,8 @@
     "test:cart": "node tests/cart-smoke-test.mjs",
     "preview": "vite preview",
     "test:wishlist": "node tests/wishlist-smoke-test.mjs",
-    "test:orders": "node tests/orders-smoke-test.mjs"
+    "test:orders": "node tests/orders-smoke-test.mjs",
+    "test:titles": "node tests/title-smoke-test.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

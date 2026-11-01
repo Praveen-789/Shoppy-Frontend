@@ -12,7 +12,7 @@ export function paymentLabel(status: string) {
   if (status === 'not_required') return 'No payment due'
   return status === 'collected' ? 'Cash collected' : status === 'partially_collected' ? 'Cash partly collected' : 'Payment pending'
 }
-export interface OrderItem { product: string; vendor: string; name: string; quantity: number; unitPricePaise: number; status?: 'active' | 'cancelled'; cancelledAt?: string }
+export interface OrderItem { product: string; vendor: string; name: string; image?: string; quantity: number; unitPricePaise: number; status?: 'active' | 'cancelled'; cancelledAt?: string }
 export interface StatusEvent { status: FulfilmentStatus; at: string }
 export interface VendorPortion {
   vendor: string
@@ -61,6 +61,10 @@ export function canCancelItem(order: CustomerOrder, item: OrderItem) {
   const seller = order.vendorOrders.find(portion => portion.vendor === item.vendor)
   return order.status !== 'cancelled' && item.status !== 'cancelled' &&
     seller?.status === 'placed' && seller.paymentStatus === 'pending'
+}
+export function canReviewItem(order: CustomerOrder, item: OrderItem) {
+  return order.status !== 'cancelled' && item.status !== 'cancelled' &&
+    order.vendorOrders.some(portion => portion.vendor === item.vendor && portion.status === 'delivered')
 }
 export function payableAmount(order: { status: string; payablePaise?: number; totalPaise?: number; subtotalPaise?: number }) {
   return order.status === 'cancelled' ? 0 : (order.payablePaise ?? order.totalPaise ?? order.subtotalPaise ?? 0)

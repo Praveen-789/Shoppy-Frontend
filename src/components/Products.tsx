@@ -2,6 +2,7 @@ import { useRequireSignIn } from '../auth/useRequireSignIn'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 import ShopHeader from './ShopHeader'
 import CategoryNavigation from './CategoryNavigation'
 import { EMPTY_CART, useCartStore } from '../stores/cartStore'
@@ -20,6 +21,7 @@ const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: '
 export default function Products() {
   const { requireSignIn } = useRequireSignIn()
   const { user, message, checkingSession } = useAuth()
+  useDocumentTitle('Shop')
   const cartItems = useCartStore(state => user ? state.carts[user.id] || EMPTY_CART : EMPTY_CART)
   const addItem = useCartStore(state => state.addItem)
   const cartBusy = useCartStore(state => state.busy)

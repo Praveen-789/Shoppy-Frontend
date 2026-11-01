@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
-import { statusLabel, paymentLabel, canCancelOrder, canCancelItem, payableAmount } from '../orderTypes'
+import { useDocumentTitle } from '../useDocumentTitle'
+import { statusLabel, paymentLabel, canCancelOrder, canCancelItem, canReviewItem, payableAmount } from '../orderTypes'
 import type { CustomerOrder, OrderItem } from '../orderTypes'
 import { RefreshCw } from 'lucide-react'
 import ShopHeader from './ShopHeader'
@@ -11,10 +12,12 @@ import './Orders.css'
 import OrderAddressEditor from './OrderAddressEditor'
 import OrderTimeline from './OrderTimeline'
 import OrderCancellation from './OrderCancellation'
+import OrderItemReview from './OrderItemReview'
 
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' })
 export default function Orders() {
   const { user } = useAuth()
+  useDocumentTitle('My orders')
   const [orders, setOrders] = useState<CustomerOrder[]>([])
   const [page, setPage] = useState(1)
   const [retry, setRetry] = useState(0)
@@ -58,11 +61,18 @@ export default function Orders() {
       {order.vendorOrders.map(portion => <section className="vendor-order-portion" key={portion.vendor} aria-label={`Delivery from ${portion.vendorName}`}>
         <div className="order-heading"><h3>{portion.vendorName}</h3><span className="order-status">{statusLabel(portion.status)}</span></div>
         <ul>{order.items.filter(item => item.vendor === portion.vendor).map(item => <li key={item.product}>
+          <div className="order-item-product">
+          <Link className="order-item-image" to={`/shop/products/${encodeURIComponent(item.product)}`} aria-label={`View ${item.name}`}>
+            <span aria-hidden="true">{item.name.charAt(0).toUpperCase()}</span>
+            {item.image && <img src={item.image} alt="" width={64} height={64} loading="lazy" onError={event => { event.currentTarget.style.display = 'none' }} />}
+          </Link>
           <div className="order-item-details"><span>{item.name} × {item.quantity}</span>
+            <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to={`/shop/products/${encodeURIComponent(item.product)}`} aria-label={`View ${item.name}`}>View product</Link></Button>
+            {canReviewItem(order, item) && <OrderItemReview key={`${user?.id}:${item.product}`} productId={item.product} productName={item.name} />}
             {(item.status === 'cancelled' || portion.status === 'cancelled') && <span className="order-help">Cancelled — not included in COD{item.cancelledAt && <> · <time dateTime={item.cancelledAt}>{new Date(item.cancelledAt).toLocaleString('en-IN')}</time></>}</span>}
             {canCancelItem(order, item) && <Button variant="link" size="sm" className="order-item-cancel h-auto p-0" aria-label={`Cancel ${item.name}`} disabled={loading || editingOrderId !== null || cancellingOrderId !== null}
               onClick={() => { setCancellingItem(item); setCancellingOrderId(order._id) }}>Cancel product</Button>}
-          </div><strong>{currency.format(item.unitPricePaise * item.quantity / 100)}</strong>
+          </div></div><strong>{currency.format(item.unitPricePaise * item.quantity / 100)}</strong>
         </li>)}</ul>
         <p><strong>Seller COD amount: {currency.format(payableAmount(portion) / 100)}</strong> · {paymentLabel(portion.paymentStatus)}</p>
         {payableAmount(portion) !== portion.subtotalPaise && <p className="order-help">Original seller subtotal: {currency.format(portion.subtotalPaise / 100)}</p>}

@@ -2,6 +2,7 @@ import { useRequireSignIn } from '../auth/useRequireSignIn'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
+import { useDocumentTitle } from '../useDocumentTitle'
 import { EMPTY_CART, useCartStore } from '../stores/cartStore'
 import { useWishlistStore } from '../stores/wishlistStore'
 import type { Product } from '../productTypes'
@@ -30,6 +31,8 @@ function ProductDetailsContent({ id }: { id: string | undefined }) {
   const [retry, setRetry] = useState(0)
   const [quantity, setQuantity] = useState('1')
   const [notice, setNotice] = useState('')
+  // Show the product name once it has loaded; before that, or if it is gone, say what the page is.
+  useDocumentTitle(product?.name || (unavailable ? 'Product unavailable' : 'Product'))
   const items = useCartStore(state => user ? state.carts[user.id] || EMPTY_CART : EMPTY_CART)
   const busy = useCartStore(state => state.busy)
   const refreshing = useCartStore(state => state.refreshing)
